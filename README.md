@@ -1,5 +1,5 @@
 # Questionnaires
-Symfony application for creating/managing questionnaires. To run the application first install [composer](https://getcomposer.org/). Afterwards navigate to the project root directory and execute:
+Symfony 2.8 application for creating/managing questionnaires. To run the application first install [composer](https://getcomposer.org/). Afterwards navigate to the project root directory and execute:
 ```
 composer install
 ```
