@@ -8,5 +8,6 @@
 /vendor/
 /bin/
 /composer.phar
+.idea/
 # /web/bundles/
 # /app/config/parameters.yml
