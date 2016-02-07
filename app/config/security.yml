@@ -1,9 +1,16 @@
 # To get started with security, check out the documentation:
 # http://symfony.com/doc/current/book/security.html
 security:
+    encoders:
+        AppBundle\Entity\User:
+            algorithm: bcrypt
 
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
+        db_provider:
+            entity:
+                class: AppBundle:User
+                property: username
         in_memory:
             memory: ~
 
@@ -14,11 +21,14 @@ security:
             security: false
 
         main:
+            logout: true
             anonymous: ~
-            # activate different ways to authenticate
+            form_login:
+                login_path: /login
+                check_path: /login_check
+            logout:
+                path: logout
 
-            # http_basic: ~
-            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
-
-            # form_login: ~
-            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+    access_control:
+        - { path: ^/($|about|login|register), roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/information, roles: ROLE_USER }
