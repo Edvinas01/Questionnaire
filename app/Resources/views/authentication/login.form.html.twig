@@ -6,14 +6,14 @@
 
 <form action="{{ path('login_check') }}" method="post">
 
-    <div style="margin-bottom: 25px" class="input-group">
-        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-        <input type="text" class="form-control" id="username" name="_username" placeholder="username" value="{{ last_username }}" />
+    <div class="form-group">
+        <label for="username" class="control-label required">Username</label>
+        <input type="text" class="form-control" id="username" name="_username" placeholder="Enter your username" value="{{ last_username }}"/>
     </div>
 
-    <div style="margin-bottom: 25px" class="input-group">
-        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-        <input type="password" class="form-control" id="password" placeholder="password" name="_password" />
+    <div class="form-group">
+        <label for="password" class="control-label required">Password</label>
+        <input type="password" class="form-control" id="password" name="_password" placeholder="Enter your password" value="{{ last_username }}"/>
     </div>
 
     <div style="margin-top:10px" class="form-group">

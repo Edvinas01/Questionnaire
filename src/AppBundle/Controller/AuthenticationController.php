@@ -21,7 +21,6 @@ class AuthenticationController extends Controller
     /**
      * @Route("/login", name="user_login")
      */
-    // todo login with form
     public function loginAction()
     {
         $authenticationUtils = $this->get('security.authentication_utils');
@@ -60,9 +59,9 @@ class AuthenticationController extends Controller
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
 
-        // If the action is post, handle registering.
         $form->handleRequest($request);
 
+        // If the action is post, handle registering.
         if ($form->isSubmitted() && $form->isValid()) {
 
             // Encode password.
@@ -70,6 +69,7 @@ class AuthenticationController extends Controller
                 ->encodePassword($user, $user->getPassword());
 
             $user->setPassword($password);
+            $user->setRole('ROLE_USER');
 
             // Save created user.
             $em = $this->getDoctrine()->getManager();

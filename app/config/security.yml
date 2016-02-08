@@ -29,6 +29,10 @@ security:
             logout:
                 path: logout
 
+    role_hierarchy:
+            ROLE_MODERATOR: [ROLE_USER]
+            ROLE_ADMIN:     [ROLE_USER, ROLE_MODERATOR]
+
     access_control:
         - { path: ^/($|about|login|register), roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/information, roles: ROLE_USER }
