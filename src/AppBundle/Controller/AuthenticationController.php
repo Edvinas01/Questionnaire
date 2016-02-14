@@ -57,7 +57,7 @@ class AuthenticationController extends Controller
     {
         // Build the form.
         $user = new User();
-        $form = $this->createForm(UserType::class, $user);
+        $form = $this->createForm('AppBundle\Form\UserType', $user);
 
         $form->handleRequest($request);
 

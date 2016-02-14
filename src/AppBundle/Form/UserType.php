@@ -15,11 +15,11 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', EmailType::class, $this->placeholder('Enter a valid email'))
-            ->add('username', TextType::class, $this->placeholder('Enter a valid username'))
-            ->add('password', RepeatedType::class,
+            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\EmailType', $this->placeholder('Enter a valid email'))
+            ->add('username', 'Symfony\Component\Form\Extension\Core\Type\TextType', $this->placeholder('Enter a valid username'))
+            ->add('password', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType',
                 array(
-                    'type' => PasswordType::class,
+                    'type' => 'Symfony\Component\Form\Extension\Core\Type\PasswordType',
                     'first_options' => array(
                         'label' => 'Password', 'attr' => array('placeholder' => 'Enter your password')),
 
