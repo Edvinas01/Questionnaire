@@ -45,6 +45,11 @@ class User implements UserInterface
      */
     private $role;
 
+    /**
+     * @ORM\Column(type="string", length=32)
+     */
+    private $avatar;
+
     public function getRoles()
     {
         return array($this->role);
@@ -102,5 +107,15 @@ class User implements UserInterface
     public function setRole($role)
     {
         $this->role = $role;
+    }
+
+    public function getAvatar()
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar($avatar)
+    {
+        $this->avatar = $avatar;
     }
 }

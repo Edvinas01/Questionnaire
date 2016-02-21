@@ -35,4 +35,4 @@ security:
 
     access_control:
         - { path: ^/($|about|login|register), roles: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/information, roles: ROLE_USER }
+        - { path: ^/(information|profile), roles: ROLE_USER }

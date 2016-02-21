@@ -17,13 +17,8 @@
                 <li><a href="{{ path('information') }}">Information</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <form role="search" class="navbar-form navbar-left">
-                    <div class="form-group">
-                        <input type="text" placeholder="Search questionnaires..." class="form-control">
-                    </div>
-                    <button class="btn btn-default" type="submit">Search</button>
-                </form>
                 {% if app.user %}
+                    <a class="btn btn-primary navbar-btn navbar-left" href="{{ path('user_login') }}">Create questionnaire</a>
                     <li class="dropdown">
                         <a aria-expanded="false"
                            aria-haspopup="true"

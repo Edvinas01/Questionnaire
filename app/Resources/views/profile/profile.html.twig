@@ -1,9 +1,109 @@
 {% extends 'layouts/base.html.twig' %}
 
 {% block body %}
-    <div class="col-lg-12">
-        {{ username }}
-        {{ email }}
-        {{ role }}
+    <div class="col-lg-3 col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                {{ username }}
+                {% if role == 'ROLE_ADMIN' %}
+                    <span class="label label-danger">Administrator</span>
+                {% elseif role == 'ROLE_MODERATOR' %}
+                    <span class="label label-success">Moderator</span>
+                {% elseif role == 'ROLE_USER' %}
+                    <span class="label label-info">User</span>
+                {% else %}
+                    <span class="label label-default">Anonymous</span>
+                {% endif %}
+            </div>
+            <div class="panel-body">
+                <div class="text-center">
+                    {% if avatar is not empty %}
+                        <img class="img-rounded" src="{{ asset('avatars/user-' ~ username ~ '.jpg') }}">
+                    {% else %}
+                        <img class="img-rounded img-auto" src="{{ asset('avatars/default.jpg') }}">
+                    {% endif %}
+                    <hr>
+                </div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Username</th>
+                        <td>{{ username }}</td>
+                    </tr>
+                    <tr>
+                        <th>Email</th>
+                        <td>{{ email }}</td>
+                    </tr>
+                    <tr>
+                        <th>Role</th>
+                        <td>
+                            {% if role == 'ROLE_ADMIN' %}
+                                Administrator
+                            {% elseif role == 'ROLE_MODERATOR' %}
+                                Moderator
+                            {% elseif role == 'ROLE_USER' %}
+                                User
+                            {% else %}
+                                Anonymous
+                            {% endif %}
+                        </td>
+                    </tr>
+                    </thead>
+                </table>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <button class="btn btn-block btn-success"
+                                data-toggle="modal"
+                                data-target="#edit-profile">Edit profile
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <div class="col-lg-9 col-md-9">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Recent activity
+            </div>
+            <div class="panel-body">
+
+            </div>
+        </div>
+    </div>
+
+    <div id="edit-profile" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Edit profile</h4>
+                </div>
+
+                {% form_theme editForm 'bootstrap_3_layout.html.twig' %}
+
+                {{ form_start(editForm) }}
+                <div class="modal-body">
+                    {{ form_row(editForm.email) }}
+                    {{ form_row(editForm.password.first) }}
+                    {{ form_row(editForm.password.second) }}
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Submit</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                </div>
+                {{ form_end(editForm) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascript %}
+    <script type="application/javascript">
+        $(function () {
+            var errors = {{ editFormErrors }};
+            if (errors > 0) {
+                $('#edit-profile').modal();
+            }
+        });
+    </script>
 {% endblock %}
