@@ -10,14 +10,23 @@ use Symfony\Component\HttpFoundation\Request;
 class QuestionnairesController extends Controller
 {
     /**
-     * @Method("POST")
+     * @Method("GET")
      * @Route("/questionnaires", name="questionnaires_home")
      */
     public function questionnairesHomeAction(Request $request)
     {
         return $this->render('questionnaires/home.html.twig', array(
-            'visibility' => $request->request->get('visibility'),
-            'name' => $request->request->get('name')
+            'visibility' => $request->query->get('visibility', null),
+            'name' => $request->query->get('name', null)
         ));
+    }
+
+    /**
+     * @Method("POST")
+     * @Route("/questionnaires", name="questionnaires_create")
+     */
+    public function questionnairesCreateAction(Request $request)
+    {
+        return $this->render('questionnaires/home.html.twig');
     }
 }

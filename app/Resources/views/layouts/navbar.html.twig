@@ -48,7 +48,7 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Create a new questionnaire</h4>
             </div>
-            <form method="POST" action="{{ path('questionnaires_home') }}">
+            <form method="GET" action="{{ path('questionnaires_home') }}">
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="name" class="control-label">Name</label>
