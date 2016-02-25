@@ -18,7 +18,7 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if app.user %}
-                    <a class="btn btn-primary navbar-btn navbar-left" href="{{ path('user_login') }}">Create questionnaire</a>
+                    <a class="btn btn-primary navbar-btn navbar-left" href="javascript:;" data-toggle="modal" data-target="#create-questionnaire">Create questionnaire</a>
                     <li class="dropdown">
                         <a aria-expanded="false"
                            aria-haspopup="true"
@@ -40,3 +40,33 @@
         </div>
     </div>
 </nav>
+
+<div id="create-questionnaire" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Create a new questionnaire</h4>
+            </div>
+            <form method="POST" action="{{ path('questionnaires_home') }}">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="name" class="control-label">Name</label>
+                        <input type="text" placeholder="Questionnaire name" id="name" name="name" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label" for="visibility">Visibility</label>
+                        <select id="visibility" name="visibility" class="form-control">
+                            <option value="USERS">Users only</option>
+                            <option value="EVERYONE">Everyone</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Create</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
