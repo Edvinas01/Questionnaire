@@ -1,45 +1,51 @@
 $(function () {
 
-    var questionnaireId = $('#questionnaire').data('id');
-    var questions = $('#questions');
-    var selects = $(questions).find('select');
+    var questionnaire = $('#questionnaire');
+    var questionnaireId = questionnaire .data('id');
+    var questionnaireDetails = questionnaire.find('.details');
 
-    function refresh(fast) {
-        selects = $(questions).find('select');
+    /**
+     * Collect questionnaire data for saving to back-end.
+     */
+    function collectData() {
 
-        $.each(selects, function (i, obj) {
+        // Collect the questions.
+        var questions = [];
+        $.each($('.question'), function (i, question) {
 
-            var answerHolder = $(obj).parents('.question').children('.answers');
-            var selection = $(obj).val();
+            // Collect the answers.
+            var answers = [];
+            $(question).find('.answer > input').each(function (i, answer) {
+                answers.push({
+                    "id": $(answer).data('id'),
+                    "content": $(answer).val()
+                });
+            });
 
-            var show = false;
-            if (selection == 'OPEN') {
-                show = false;
-            } else if (selection == 'SINGLE_SELECTION' || selection == 'SELECTION') {
-                show = true;
-            }
-
-            if (show) {
-                if (fast) {
-                    answerHolder.show();
-                } else {
-                    answerHolder.fadeIn();
-                }
-            } else {
-                if (fast) {
-                    answerHolder.hide();
-                } else {
-                    answerHolder.fadeOut();
-                }
-            }
+            // Store answers.
+            questions.push({
+                "id": $(question).data('id'),
+                "content": $(question).find('.description').val(),
+                "type": $(question).find('.type').val(),
+                "answers": answers
+            });
         });
+
+        // Store full questionnaire data.
+        return {
+            "id": questionnaireId,
+            "questions": questions,
+            "name": $(questionnaireDetails).find('.name').val(),
+            "expires": $(questionnaireDetails).find('.expires').val()
+        };
     }
 
-    // todo updating and saving, save before each action
-    selects.on('change', function () {
-        var id = $(this).closest('.question').data('id');
+    $('#save-questionnaire').click(function () {
+        console.log(collectData());
+    });
 
-        console.log('change: ' + id);
+    $('#publish-questionnaire').click(function () {
+        console.log('publish');
     });
 
     /**
