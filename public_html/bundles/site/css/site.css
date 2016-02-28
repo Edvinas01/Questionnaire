@@ -6,3 +6,15 @@ body {
     max-width: 100%;
     height: auto;
 }
+
+.answer {
+    margin-bottom: 10px;
+}
+
+.question h1, h2, h3 {
+    margin-top: 0;
+}
+
+.actions .action-row {
+    margin-bottom: 10px;
+}

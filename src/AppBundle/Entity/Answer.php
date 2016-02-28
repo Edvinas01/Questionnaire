@@ -11,8 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Answer extends BaseEntity
 {
     /**
-     * @Assert\NotBlank()
-     * @ORM\Column(type="string", length=512, nullable=false)
+     * @ORM\Column(type="string", length=512, nullable=true)
      */
     private $content;
 
@@ -40,5 +39,10 @@ class Answer extends BaseEntity
     public function setQuestion($question)
     {
         $this->question = $question;
+    }
+
+    public function toArray()
+    {
+        return array('question' => $this->content);
     }
 }

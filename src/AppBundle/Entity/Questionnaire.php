@@ -10,6 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Questionnaire extends BaseEntity
 {
+
     /**
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=32, nullable=false)
@@ -17,13 +18,18 @@ class Questionnaire extends BaseEntity
     private $name;
 
     /**
-     * @ORM\Column(type="datetime", length=32)
+     * @ORM\Column(type="date", length=32)
      */
     private $expires;
 
     /**
      * @Assert\NotNull()
-     * @ORM\OneToMany(targetEntity="question", mappedBy="questionnaire")
+     * @ORM\ManyToOne(targetEntity="User")
+     */
+    private $user;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Question", mappedBy="questionnaire")
      */
     private $questions;
 
@@ -55,5 +61,20 @@ class Questionnaire extends BaseEntity
     public function setQuestions($questions)
     {
         $this->questions = $questions;
+    }
+
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    public function getQuestion($id)
+    {
+        foreach ($this->questions as $question) {
+            if ($question->getId() == $id) {
+                return $question;
+            }
+        }
+        return null;
     }
 }

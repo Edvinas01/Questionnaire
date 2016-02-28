@@ -16,8 +16,7 @@ class Question extends BaseEntity
     private $type;
 
     /**
-     * @Assert\NotBlank()
-     * @ORM\Column(type="string", length=512)
+     * @ORM\Column(type="string", length=512, nullable=true)
      */
     private $content;
 
@@ -29,7 +28,7 @@ class Question extends BaseEntity
 
     /**
      * @Assert\NotNull()
-     * @ORM\OneToMany(targetEntity="Answer", mappedBy="question")
+     * @ORM\OneToMany(targetEntity="Answer", mappedBy="question",  orphanRemoval=true)
      */
     private $answers;
 
@@ -71,5 +70,13 @@ class Question extends BaseEntity
     public function setAnswers($answers)
     {
         $this->answers = $answers;
+    }
+
+    public function addAnswer($answer)
+    {
+        if ($this->answers == null) {
+            $this->answers = array();
+        }
+        array_push($this->answers, $answer);
     }
 }
