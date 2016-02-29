@@ -75,7 +75,9 @@ class QuestionnairesController extends Controller
         $questionnaire = $this->getQuestionnaire($id);
         $this->createEmptyQuestion($questionnaire);
 
-        return new Response();
+        return $this->render(':questionnaires:questions.html.twig', array(
+            'questionnaire' => $questionnaire
+        ));
     }
 
     /**
@@ -86,12 +88,15 @@ class QuestionnairesController extends Controller
     {
         // Find and remove the question from database.
         $question = $this->getQuestion($id);
+        $questionnaire = $question->getQuestionnaire();
 
         $em = $this->getDoctrine()->getEntityManager();
         $em->remove($question);
         $em->flush();
 
-        return new Response();
+        return $this->render(':questionnaires:questions.html.twig', array(
+            'questionnaire' => $questionnaire
+        ));
     }
 
     /**
@@ -111,7 +116,9 @@ class QuestionnairesController extends Controller
         $em->persist($answer);
         $em->flush();
 
-        return new Response();
+        return $this->render(':questionnaires:answers.html.twig', array(
+            'question' => $question
+        ));
     }
 
     /**
@@ -122,12 +129,15 @@ class QuestionnairesController extends Controller
     {
         // Find the answer and remove it.
         $answer = $this->getAnswer($id);
+        $question = $answer->getQuestion();
 
         $em = $this->getDoctrine()->getEntityManager();
         $em->remove($answer);
         $em->flush();
 
-        return new Response();
+        return $this->render(':questionnaires:answers.html.twig', array(
+            'question' => $question
+        ));
     }
 
     /**

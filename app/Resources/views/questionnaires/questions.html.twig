@@ -1,0 +1,43 @@
+{% for question in questionnaire.questions %}
+    <h3>Question {{ loop.index0 + 1 }}</h3>
+    <div class="well question" data-id="{{ question.id }}">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="row">
+                            <div class="col-md-12 answers">
+                                {% include 'questionnaires/answers.html.twig' with {'questions': question} %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <h3>Question text</h3>
+                        <textarea rows="5" class="form-control description" placeholder="Enter your question description">{{ question.content }}</textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="row actions">
+                    <div class="col-md-12">
+                        <h3>Options</h3>
+                    </div>
+                    <div class="col-md-12 action-row">
+                        <select name="type" class="form-control type">
+                            <option {{ question.type == 'MULTPLE' ? 'selected="selected"' : '' }} value="MULTIPLE">Multiple selection</option>
+                            <option {{ question.type == 'SINGLE' ? 'selected="selected"' : '' }} value="SINGLE">Single selection</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12 action-row">
+                        <button class="btn btn-success btn-block add-question">Add question</button>
+                    </div>
+                    {% if questionnaire.questions|length > 1 %}
+                        <div class="col-md-12 action-row">
+                            <button class="btn btn-danger btn-block remove-question">Remove question</button>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endfor %}

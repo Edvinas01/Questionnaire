@@ -40,6 +40,9 @@ $(function () {
         };
     }
 
+    var questions = $('#questions');
+    var answers = $('.answers');
+
     $('#save-questionnaire').click(function () {
         console.log(collectData());
     });
@@ -51,12 +54,12 @@ $(function () {
     /**
      * Add a new question to and questionnaire.
      */
-    $('.add-question').click(function () {
+    questions.on('click', 'button.add-question', function () {
         $.ajax({
             type: "POST",
             url: "/questionnaires/" + questionnaireId + "/add-question",
-            success: function () {
-                location.reload();
+            success: function (response) {
+                questions.html(response);
             }
         });
     });
@@ -64,13 +67,13 @@ $(function () {
     /**
      * Remove question from questionnaire.
      */
-    $('.remove-question').click(function () {
+    questions.on('click', 'button.remove-question', function () {
         var id = $(this).closest('.question').data('id');
         $.ajax({
             type: "POST",
             url: "/questions/" + id + "/remove",
-            success: function () {
-                location.reload();
+            success: function (response) {
+                questions.html(response);
             }
         });
     });
@@ -78,13 +81,14 @@ $(function () {
     /**
      * Add a new empty answer to the question.
      */
-    $('.add-answer').click(function () {
+    questions.on('click', 'button.add-answer', function () {
+        var answers = $(this).closest('.answers');
         var questionId = $(this).closest('.question').data('id');
         $.ajax({
             type: "POST",
             url: "/questions/" + questionId + "/add-answer",
-            success: function () {
-                location.reload();
+            success: function (response) {
+                answers.html(response);
             }
         });
     });
@@ -92,13 +96,14 @@ $(function () {
     /**
      * Remove answer.
      */
-    $('.remove-answer').click(function () {
+    questions.on('click', 'button.remove-answer', function () {
+        var answers = $(this).closest('.answers');
         var id = $(this).closest('.answer').data('id');
         $.ajax({
             type: "POST",
             url: "/answers/" + id + "/remove",
-            success: function () {
-                location.reload();
+            success: function (response) {
+                answers.html(response);
             }
         });
     });

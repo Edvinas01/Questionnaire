@@ -1,0 +1,16 @@
+<h3>Answers</h3>
+{% for answer in question.answers %}
+    <div class="input-group answer" data-id="{{ answer.id }}">
+        <input type="text" value="{{ answer.content }}" data-id="{{ answer.id }}" placeholder="Answer {{ loop.index0 + 1 }}" class="form-control">
+        <span class="input-group-btn">
+            <button type="button" class="btn btn-success add-answer">
+                <span class="glyphicon glyphicon-plus"></span>
+            </button>
+            {% if question.answers|length > 1 %}
+                <button type="button" class="btn btn-danger remove-answer">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+            {% endif %}
+        </span>
+    </div>
+{% endfor %}
