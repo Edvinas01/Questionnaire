@@ -29,6 +29,11 @@ class Questionnaire extends BaseEntity
     private $user;
 
     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $visible = false;
+
+    /**
      * @ORM\OneToMany(targetEntity="Question", mappedBy="questionnaire")
      */
     private $questions;
@@ -68,13 +73,13 @@ class Questionnaire extends BaseEntity
         return $this->user;
     }
 
-    public function getQuestion($id)
+    public function getVisible()
     {
-        foreach ($this->questions as $question) {
-            if ($question->getId() == $id) {
-                return $question;
-            }
-        }
-        return null;
+        return $this->visible;
+    }
+
+    public function setVisible($visible)
+    {
+        $this->visible = $visible;
     }
 }

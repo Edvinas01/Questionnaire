@@ -52,6 +52,34 @@ class QuestionnairesController extends Controller
         return $this->redirectToEdit($questionnaire->getId());
     }
 
+
+    /**
+     * @Method("POST")
+     * @Route("/questionnaires/{id}", name="questionnaires_save")
+     */
+    public function saveChanges(Request $request, $id)
+    {
+        $this->saveQuestionnaire($request, $this->getQuestionnaire($id));
+        return new Response();
+    }
+
+    /**
+     * @Method("POST")
+     * @Route("/questionnaires/{id}/visibility", name="questionnaires_visibility")
+     */
+    public function setVisibilityAction(Request $request, $id)
+    {
+        $questionnaire = $this->getQuestionnaire($id);
+        $questionnaire->setVisible($request->query->get('visible'));
+
+        // Persist data.
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($questionnaire);
+        $em->flush();
+
+        return new Response();
+    }
+
     /**
      * @Method("GET")
      * @Route("/questionnaires/{id}", name="questionnaires_edit_show")
@@ -73,7 +101,9 @@ class QuestionnairesController extends Controller
     public function addQuestionAction(Request $request, $id)
     {
         $questionnaire = $this->getQuestionnaire($id);
+
         $this->createEmptyQuestion($questionnaire);
+        $this->saveQuestionnaire($request, $questionnaire);
 
         return $this->render(':questionnaires:questions.html.twig', array(
             'questionnaire' => $questionnaire
@@ -84,11 +114,12 @@ class QuestionnairesController extends Controller
      * @Method("POST")
      * @Route("/questions/{id}/remove", name="remove_question")
      */
-    public function removeQuestionAction($id)
+    public function removeQuestionAction(Request $request, $id)
     {
         // Find and remove the question from database.
         $question = $this->getQuestion($id);
         $questionnaire = $question->getQuestionnaire();
+        $this->saveQuestionnaire($request, $questionnaire);
 
         $em = $this->getDoctrine()->getEntityManager();
         $em->remove($question);
@@ -103,7 +134,7 @@ class QuestionnairesController extends Controller
      * @Method("POST")
      * @Route("/questions/{id}/add-answer", name="add_answer")
      */
-    public function addAnswerAction($id)
+    public function addAnswerAction(Request $request, $id)
     {
         // Find the question.
         $question = $this->getQuestion($id);
@@ -116,6 +147,7 @@ class QuestionnairesController extends Controller
         $em->persist($answer);
         $em->flush();
 
+        $this->saveQuestionnaire($request, $question->getQuestionnaire());
         return $this->render(':questionnaires:answers.html.twig', array(
             'question' => $question
         ));
@@ -125,11 +157,12 @@ class QuestionnairesController extends Controller
      * @Method("POST")
      * @Route("/answers/{id}/remove", name="remove_answer")
      */
-    public function removeAnswerAction($id)
+    public function removeAnswerAction(Request $request, $id)
     {
         // Find the answer and remove it.
         $answer = $this->getAnswer($id);
         $question = $answer->getQuestion();
+        $this->saveQuestionnaire($request, $question->getQuestionnaire());
 
         $em = $this->getDoctrine()->getEntityManager();
         $em->remove($answer);
@@ -270,5 +303,42 @@ class QuestionnairesController extends Controller
         }
 
         return $answer;
+    }
+
+    /**
+     * Save the current questionnaire state to database.
+     */
+    private function saveQuestionnaire(Request $request, $questionnaire)
+    {
+        // Parse json.
+        $data = json_decode($request->getContent(), true);
+
+        // Find the questionnaire.
+        $questionnaire->setName($data['name']);
+
+        foreach ($data['questions'] as $questionData) {
+
+            // Update each question data.
+            foreach ($questionnaire->getQuestions() as $question) {
+                if ($question->getId() == $questionData['id']) {
+                    $question->setType($questionData['type']);
+                    $question->setContent($questionData['content']);
+                }
+
+                // Update each answer data.
+                foreach ($questionData['answers'] as $answerData) {
+                    foreach ($question->getAnswers() as $answer) {
+                        if ($answer->getId() == $answerData['id']) {
+                            $answer->setContent($answerData['content']);
+                        }
+                    }
+                }
+            }
+        }
+
+        // Persist questionnaire.
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($questionnaire);
+        $em->flush();
     }
 }

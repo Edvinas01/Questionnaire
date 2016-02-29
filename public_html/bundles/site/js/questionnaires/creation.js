@@ -1,6 +1,7 @@
 $(function () {
 
     var questionnaire = $('#questionnaire');
+    var questionnaireName = questionnaire.find('h1.questionnaire-name');
     var questionnaireId = questionnaire .data('id');
     var questionnaireDetails = questionnaire.find('.details');
 
@@ -43,12 +44,30 @@ $(function () {
     var questions = $('#questions');
     var answers = $('.answers');
 
+    /**
+     * Save changes of questionnaire and reload page.
+     */
     $('#save-questionnaire').click(function () {
-        console.log(collectData());
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(collectData()),
+            url: "/questionnaires/" + questionnaireId,
+            success: function () {
+                location.reload();
+            }
+        });
     });
 
-    $('#publish-questionnaire').click(function () {
-        console.log('publish');
+    questionnaire.find('.questionnaire-visibility').click(function () {
+        var show = $(this).data('action');
+        // todo
+    });
+
+    /**
+     * Update the name header dynamically.
+     */
+    $('input.name').keyup(function() {
+        questionnaireName.html('Editing "' + $(this).val() + '"');
     });
 
     /**
@@ -57,6 +76,7 @@ $(function () {
     questions.on('click', 'button.add-question', function () {
         $.ajax({
             type: "POST",
+            data: JSON.stringify(collectData()),
             url: "/questionnaires/" + questionnaireId + "/add-question",
             success: function (response) {
                 questions.html(response);
@@ -71,6 +91,7 @@ $(function () {
         var id = $(this).closest('.question').data('id');
         $.ajax({
             type: "POST",
+            data: JSON.stringify(collectData()),
             url: "/questions/" + id + "/remove",
             success: function (response) {
                 questions.html(response);
@@ -86,6 +107,7 @@ $(function () {
         var questionId = $(this).closest('.question').data('id');
         $.ajax({
             type: "POST",
+            data: JSON.stringify(collectData()),
             url: "/questions/" + questionId + "/add-answer",
             success: function (response) {
                 answers.html(response);
@@ -101,6 +123,7 @@ $(function () {
         var id = $(this).closest('.answer').data('id');
         $.ajax({
             type: "POST",
+            data: JSON.stringify(collectData()),
             url: "/answers/" + id + "/remove",
             success: function (response) {
                 answers.html(response);

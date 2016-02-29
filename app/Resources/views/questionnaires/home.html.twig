@@ -5,7 +5,7 @@
         <div class="bs-docs-section">
             <div class="row">
                 <div class="col-md-12">
-                    <h1>Editing "{{ questionnaire.name }}"</h1>
+                    <h1 class="questionnaire-name">Editing "{{ questionnaire.name }}"</h1>
                     <hr>
                 </div>
             </div>
@@ -28,7 +28,11 @@
                                 <label>Actions</label>
                                 <div>
                                     <button id="save-questionnaire" class="btn btn-success">Save changes</button>
-                                    <button id="publish-questionnaire" class="btn btn-primary">Publish</button>
+                                    {% if questionnaire.visible %}
+                                        <button data-action="hide" class="btn btn-warning questionnaire-visibility">Hide questionnaire</button>
+                                    {% else %}
+                                        <button data-action="show" class="btn btn-primary questionnaire-visibility">Publish questionnaire</button>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
