@@ -1,7 +1,7 @@
 {% extends 'layouts/base.html.twig' %}
 
 {% block body %}
-    <div class="col-lg-3 col-md-3">
+    <div class="col-lg-4 col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
                 {{ username }}
@@ -61,15 +61,50 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-9 col-md-9">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                Recent activity
+    <div class="col-lg-8 col-md-8">
+        {% if questionnaires|length == 0 %}
+            <h2>Looks like you have not made any questionnaires yet, how about you create one
+                <a href="javascript:;" data-toggle="modal" data-target="#create-questionnaire">here!</a>
+            </h2>
+        {% else %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Your questionnaires
+                </div>
+                <div class="panel-body">
+                    <table class="table table-striped table-hover" id="questionnaires-table">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Ends on</th>
+                            <th>Visibility</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for questionnaire in questionnaires %}
+                            <tr data-id="{{ questionnaire.id }}">
+                                <td>{{ questionnaire.name }}</td>
+                                <td>{{ questionnaire.expires|date }}</td>
+                                <td>
+                                    {% if questionnaire.visible %}
+                                        <a href="javascript:;" data-action="hide" class="btn btn-xs btn-warning questionnaire-visibility">Hide</a>
+                                    {% else %}
+                                        <a href="javascript:;" data-action="show" class="btn btn-xs btn-primary questionnaire-visibility">Publish</a>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="{{ path('questionnaires_edit_show', {'id': questionnaire.id }) }}" class="btn btn-xs btn-primary questionnaire-view">View</a>
+                                    <a href="{{ path('questionnaires_edit_show', {'id': questionnaire.id }) }}" class="btn btn-xs btn-success questionnaire-edit">Edit</a>
+                                    <a href="javascript:;" class="btn btn-xs btn-danger questionnaire-delete">Delete</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div class="panel-body">
-
-            </div>
-        </div>
+        {% endif %}
     </div>
 
     <div id="edit-profile" class="modal fade" role="dialog">
@@ -106,4 +141,5 @@
             }
         });
     </script>
+    <script type="application/javascript" src="{{ asset('bundles/site/js/profile/profile.js') }}"></script>
 {% endblock %}

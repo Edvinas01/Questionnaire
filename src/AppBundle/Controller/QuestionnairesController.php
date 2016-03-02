@@ -15,6 +15,8 @@ use Symfony\Component\Validator\Constraints\DateTime;
 
 class QuestionnairesController extends Controller
 {
+    private $MAX_QUESTIONNAIRE_COUNT = 10;
+
     /**
      * @Method("GET")
      * @Route("/questionnaires", name="questionnaires_home")
@@ -33,6 +35,27 @@ class QuestionnairesController extends Controller
      */
     public function questionnairesCreateAction(Request $request)
     {
+        // 10 questionnaires max per user.
+        if (count($this->getQuestionnaires()) + 1 > $this->MAX_QUESTIONNAIRE_COUNT) {
+
+            $response = new Response();
+            $response->setContent('You can have at most ' . $this->MAX_QUESTIONNAIRE_COUNT . ' questionnaires');
+            $response->setStatusCode(400);
+            return $response;
+        }
+
+        $expires = $request->request->get('expires');
+
+        // Max questionnaire duration is one week.
+        if (!$this->isValidExpiry($expires)) {
+            $response = new Response();
+            $response->setContent('Invalid expiry date');
+            $response->setStatusCode(400);
+            return $response;
+        }
+
+        $date = new \DateTime();
+        $date->add(new \DateInterval('P' . $expires . 'D'));
 
         // User to assign the questionnaire to.
         $user = $this->get('security.token_storage')->getToken()->getUser();
@@ -40,8 +63,8 @@ class QuestionnairesController extends Controller
         // Create a new questionnaire using name.
         $questionnaire = new Questionnaire(
             $request->request->get('name'),
-            new \DateTime('2016-01-01'),        // todo proper date
-            $user
+            $user,
+            $date
         );
 
         // Persist data.
@@ -49,6 +72,7 @@ class QuestionnairesController extends Controller
         $em->persist($questionnaire);
         $em->flush();
 
+        $this->createEmptyQuestion($questionnaire);
         return $this->redirectToEdit($questionnaire->getId());
     }
 
@@ -92,6 +116,21 @@ class QuestionnairesController extends Controller
         return $this->render('questionnaires/home.html.twig', array(
             "questionnaire" => $questionnaire
         ));
+    }
+
+    /**
+     * @Method("DELETE")
+     * @Route("/questionnaires/{id}", name="questionnaires_delete")
+     */
+    public function questionnairesDeleteAction($id)
+    {
+        $questionnaire = $this->getQuestionnaire($id);
+
+        $em = $this->getDoctrine()->getEntityManager();
+        $em->remove($questionnaire);
+        $em->flush();
+
+        return new Response();
     }
 
     /**
@@ -316,6 +355,15 @@ class QuestionnairesController extends Controller
         // Find the questionnaire.
         $questionnaire->setName($data['name']);
 
+        $expires = $data['expires'];
+
+        // Max questionnaire duration is one week.
+        if ($this->isValidExpiry($expires)) {
+            $date = new \DateTime();
+            $date->add(new \DateInterval('P' . $expires . 'D'));
+            $questionnaire->setExpires($date);
+        }
+
         foreach ($data['questions'] as $questionData) {
 
             // Update each question data.
@@ -340,5 +388,29 @@ class QuestionnairesController extends Controller
         $em = $this->getDoctrine()->getManager();
         $em->persist($questionnaire);
         $em->flush();
+    }
+
+    private function getQuestionnaires()
+    {
+        // Get the current user id to lookup for questionnaires which belong to this user.
+        $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
+
+        // Query the questionnaires
+        $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
+        $qb->select('q')
+            ->from('AppBundle:Questionnaire', 'q')
+            ->join('q.user', 'u')
+            ->andWhere('u.id = ?1')
+            ->setParameter(1, $userId);
+
+        return $qb->getQuery()->getArrayResult();
+    }
+
+    private function isValidExpiry($expires)
+    {
+        if ($expires <= 0 || $expires > 7) {
+            return false;
+        }
+        return true;
     }
 }

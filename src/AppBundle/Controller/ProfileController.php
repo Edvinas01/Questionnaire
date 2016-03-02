@@ -51,8 +51,25 @@ class ProfileController extends Controller
                 'username' => $user->getUsername(),
                 'email' => $user->getEmail(),
                 'role' => $user->getRole(),
-                'avatar' => $user->getAvatar()
+                'avatar' => $user->getAvatar(),
+                'questionnaires' => $this->getQuestionnaires()
             )
         );
+    }
+
+    private function getQuestionnaires()
+    {
+        // Get the current user id to lookup for questionnaires which belong to this user.
+        $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
+
+        // Query the questionnaires
+        $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
+        $qb->select('q')
+            ->from('AppBundle:Questionnaire', 'q')
+            ->join('q.user', 'u')
+            ->andWhere('u.id = ?1')
+            ->setParameter(1, $userId);
+
+        return $qb->getQuery()->getArrayResult();
     }
 }

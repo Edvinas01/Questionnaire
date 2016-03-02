@@ -18,7 +18,7 @@ class Questionnaire extends BaseEntity
     private $name;
 
     /**
-     * @ORM\Column(type="date", length=32)
+     * @ORM\Column(type="datetime", length=32)
      */
     private $expires;
 
@@ -34,9 +34,16 @@ class Questionnaire extends BaseEntity
     private $visible = false;
 
     /**
-     * @ORM\OneToMany(targetEntity="Question", mappedBy="questionnaire")
+     * @ORM\OneToMany(targetEntity="Question", mappedBy="questionnaire", orphanRemoval=true)
      */
     private $questions;
+
+    public function __construct($name, $user, $expires)
+    {
+        $this->name = $name;
+        $this->user = $user;
+        $this->expires = $expires;
+    }
 
     public function getName()
     {

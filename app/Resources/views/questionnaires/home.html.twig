@@ -16,13 +16,27 @@
                 <div class="col-md-12">
                     <div class="well">
                         <div class="row details">
-                            <div class="col-md-4">
+                            <div class="col-md-3">
                                 <label>Questionnaire name</label>
                                 <input type="text" value="{{ questionnaire.name }}" placeholder="Enter you questionnaire name" class="form-control name">
                             </div>
-                            <div class="col-md-4">
+                            <div class="col-md-2">
                                 <label>Valid until</label>
-                                <input type="text" value="{{ questionnaire.expires|date }}" placeholder="When your questionnaire expires" class="form-control expires">
+                                <input disabled type="text" value="{{ questionnaire.expires|date }}" placeholder="When your questionnaire expires" class="form-control">
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label" for="expires">Questionnaire duration</label>
+                                    <select id="expires" name="expires" class="form-control expires">
+                                        <option value="1" selected>One day</option>
+                                        <option value="2">Two days</option>
+                                        <option value="3">Three days</option>
+                                        <option value="4">Four days</option>
+                                        <option value="5">Five days</option>
+                                        <option value="6">Six days</option>
+                                        <option value="7">A week</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="col-md-4">
                                 <label>Actions</label>
