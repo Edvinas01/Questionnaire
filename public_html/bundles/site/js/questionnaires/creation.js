@@ -60,7 +60,14 @@ $(function () {
 
     questionnaire.find('.questionnaire-visibility').click(function () {
         var show = $(this).data('action');
-        // todo
+        $.ajax({
+            type: "POST",
+            data: JSON.stringify(collectData()),
+            url: "/questionnaires/" + questionnaireId + "/publish?show=" + show,
+            success: function () {
+                location.reload();
+            }
+        });
     });
 
     /**

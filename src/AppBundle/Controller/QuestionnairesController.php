@@ -213,6 +213,25 @@ class QuestionnairesController extends Controller
     }
 
     /**
+     * @Method("POST")
+     * @Route("/questionnaires/{id}/publish", name="questionnaire_publish")
+     */
+    public function publishAction(Request $request, $id)
+    {
+        $questionnaire = $this->getQuestionnaire($id);
+
+        $show = $request->query->get('show');
+        if ($show == 'show') {
+            $questionnaire->setVisible(true);
+        } else {
+            $questionnaire->setVisible(false);
+        }
+
+        $this->saveQuestionnaire($request, $questionnaire);
+        return new Response();
+    }
+
+    /**
      * Create an empty question object and persist it.
      *
      * @param $questionnaire - questionnaire to which to add the question to.
@@ -263,7 +282,7 @@ class QuestionnairesController extends Controller
         $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
 
         // Query the questionnaire.
-        $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
+        $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
         $qb->select('q')
             ->from('AppBundle:Questionnaire', 'q')
             ->join('q.user', 'u')
@@ -352,9 +371,7 @@ class QuestionnairesController extends Controller
         // Parse json.
         $data = json_decode($request->getContent(), true);
 
-        // Find the questionnaire.
         $questionnaire->setName($data['name']);
-
         $expires = $data['expires'];
 
         // Max questionnaire duration is one week.
@@ -364,25 +381,28 @@ class QuestionnairesController extends Controller
             $questionnaire->setExpires($date);
         }
 
-        foreach ($data['questions'] as $questionData) {
+        if (isset($data['questions'])) {
+            foreach ($data['questions'] as $questionData) {
 
-            // Update each question data.
-            foreach ($questionnaire->getQuestions() as $question) {
-                if ($question->getId() == $questionData['id']) {
-                    $question->setType($questionData['type']);
-                    $question->setContent($questionData['content']);
-                }
+                // Update each question data.
+                foreach ($questionnaire->getQuestions() as $question) {
+                    if ($question->getId() == $questionData['id']) {
+                        $question->setType($questionData['type']);
+                        $question->setContent($questionData['content']);
+                    }
 
-                // Update each answer data.
-                foreach ($questionData['answers'] as $answerData) {
-                    foreach ($question->getAnswers() as $answer) {
-                        if ($answer->getId() == $answerData['id']) {
-                            $answer->setContent($answerData['content']);
+                    // Update each answer data.
+                    foreach ($questionData['answers'] as $answerData) {
+                        foreach ($question->getAnswers() as $answer) {
+                            if ($answer->getId() == $answerData['id']) {
+                                $answer->setContent($answerData['content']);
+                            }
                         }
                     }
                 }
             }
         }
+
 
         // Persist questionnaire.
         $em = $this->getDoctrine()->getManager();

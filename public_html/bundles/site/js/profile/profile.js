@@ -12,4 +12,17 @@ $(function () {
             }
         });
     });
+
+    questionnairesTable.find('.questionnaire-visibility').click(function () {
+        var id = $(this).closest('tr').data('id');
+        var show = $(this).data('action')
+            ;
+        $.ajax({
+            type: "POST",
+            url: "/questionnaires/" + id + "/publish?show=" + show,
+            success: function () {
+                location.reload();
+            }
+        });
+    });
 });

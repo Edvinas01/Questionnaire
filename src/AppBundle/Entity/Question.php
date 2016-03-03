@@ -22,7 +22,7 @@ class Question extends BaseEntity
 
     /**
      * @Assert\NotNull()
-     * @ORM\ManyToOne(targetEntity="Questionnaire")
+     * @ORM\ManyToOne(targetEntity="Questionnaire", inversedBy="questions")
      */
     private $questionnaire;
 
