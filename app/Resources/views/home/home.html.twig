@@ -3,14 +3,32 @@
 {% block body %}
     <div class="col-lg-12">
         <div class="page-header">
-            <h1 id="containers">Containers</h1>
+            <h1 id="containers">Recently updated questionnaires</h1>
         </div>
-        <div class="bs-component">
-            <div class="jumbotron">
-                <h1>Stuff</h1>
-                <p>Stuff of stuff</p>
-                <p><a class="btn btn-primary btn-lg">Meep</a></p>
-            </div>
+        <div class="questionnaires">
+            {% for questionnaire in questionnaires %}
+                <div class="row">
+                    {% set user = questionnaire.user %}
+                    <div class="col-md-12">
+                        <h3>
+                            <a href="{{ path('questionnaires_view', {'id': questionnaire.id }) }}" title="Fill out this questionnaire!">{{ questionnaire.name }}</a>
+                        </h3>
+                        <blockquote>
+                            {% if questionnaire.description|length > 0 %}
+                                <p>{{ questionnaire.description }}</p>
+                            {% else %}
+                                <p>No description for this questionnaire :(</p>
+                            {% endif %}
+                            <footer>
+                                by
+                                <cite title="Cite">
+                                    <span style="color: #ff7701">{{ user.username }}</span>, valid until {{ questionnaire.expires|date }}
+                                </cite>
+                            </footer>
+                        </blockquote>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}

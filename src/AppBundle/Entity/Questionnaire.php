@@ -18,6 +18,11 @@ class Questionnaire extends BaseEntity
     private $name;
 
     /**
+     * @ORM\Column(type="string", length=1024)
+     */
+    private $description;
+
+    /**
      * @ORM\Column(type="datetime", length=32)
      */
     private $expires;
@@ -80,6 +85,11 @@ class Questionnaire extends BaseEntity
         return $this->user;
     }
 
+    public function setUser($user)
+    {
+        $this->user = $user;
+    }
+
     public function getVisible()
     {
         return $this->visible;
@@ -88,5 +98,15 @@ class Questionnaire extends BaseEntity
     public function setVisible($visible)
     {
         $this->visible = $visible;
+    }
+
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    public function setDescription($description)
+    {
+        $this->description = $description;
     }
 }

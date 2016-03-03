@@ -372,6 +372,7 @@ class QuestionnairesController extends Controller
         $data = json_decode($request->getContent(), true);
 
         $questionnaire->setName($data['name']);
+        $questionnaire->setDescription($data['description']);
         $expires = $data['expires'];
 
         // Max questionnaire duration is one week.

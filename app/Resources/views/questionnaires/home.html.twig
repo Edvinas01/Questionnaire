@@ -15,38 +15,46 @@
                 </div>
                 <div class="col-md-12">
                     <div class="well">
-                        <div class="row details">
-                            <div class="col-md-3">
-                                <label>Questionnaire name</label>
-                                <input type="text" value="{{ questionnaire.name }}" placeholder="Enter you questionnaire name" class="form-control name">
-                            </div>
-                            <div class="col-md-2">
-                                <label>Valid until</label>
-                                <input disabled type="text" value="{{ questionnaire.expires|date }}" placeholder="When your questionnaire expires" class="form-control">
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label class="control-label" for="expires">Questionnaire duration</label>
-                                    <select id="expires" name="expires" class="form-control expires">
-                                        <option value="1" selected>One day</option>
-                                        <option value="2">Two days</option>
-                                        <option value="3">Three days</option>
-                                        <option value="4">Four days</option>
-                                        <option value="5">Five days</option>
-                                        <option value="6">Six days</option>
-                                        <option value="7">A week</option>
-                                    </select>
+                        <div class="details">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label>Questionnaire name</label>
+                                    <input type="text" value="{{ questionnaire.name }}" placeholder="Enter you questionnaire name" class="form-control name">
+                                </div>
+                                <div class="col-md-2">
+                                    <label>Valid until</label>
+                                    <input disabled type="text" value="{{ questionnaire.expires|date }}" placeholder="When your questionnaire expires" class="form-control">
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label" for="expires">Questionnaire duration</label>
+                                        <select id="expires" name="expires" class="form-control expires">
+                                            <option value="1" selected>One day</option>
+                                            <option value="2">Two days</option>
+                                            <option value="3">Three days</option>
+                                            <option value="4">Four days</option>
+                                            <option value="5">Five days</option>
+                                            <option value="6">Six days</option>
+                                            <option value="7">A week</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <label>Actions</label>
+                                    <div>
+                                        <button id="save-questionnaire" class="btn btn-success">Save changes</button>
+                                        {% if questionnaire.visible %}
+                                            <button data-action="hide" class="btn btn-warning questionnaire-visibility">Hide questionnaire</button>
+                                        {% else %}
+                                            <button data-action="show" class="btn btn-primary questionnaire-visibility">Publish questionnaire</button>
+                                        {% endif %}
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-md-4">
-                                <label>Actions</label>
-                                <div>
-                                    <button id="save-questionnaire" class="btn btn-success">Save changes</button>
-                                    {% if questionnaire.visible %}
-                                        <button data-action="hide" class="btn btn-warning questionnaire-visibility">Hide questionnaire</button>
-                                    {% else %}
-                                        <button data-action="show" class="btn btn-primary questionnaire-visibility">Publish questionnaire</button>
-                                    {% endif %}
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <label>Questionnaire description</label>
+                                    <textarea rows="5" class="form-control description" placeholder="Enter your questionnaire description">{{ questionnaire.description }}</textarea>
                                 </div>
                             </div>
                         </div>

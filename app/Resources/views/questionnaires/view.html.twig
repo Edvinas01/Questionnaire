@@ -1,0 +1,35 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block body %}
+    <div class="col-lg-12" data-id="{{ questionnaire.id }}">
+        <div class="row">
+            {% for question in questionnaire.questions %}
+                <div class="col-lg-12 col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Question {{ loop.index0 + 1 }}
+                        </div>
+                        <div class="panel-body">
+                            {% if question.content|length == 0 %}
+                                <h3>Question has no description</h3>
+                            {% else %}
+                                <h3>{{ question.content }}</h3>
+                            {% endif %}
+                            {% for answer in question.answers %}
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        Answer:
+                                        {{ answer.content }}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascript %}
+{% endblock %}

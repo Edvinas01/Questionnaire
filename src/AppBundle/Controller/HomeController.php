@@ -12,7 +12,9 @@ class HomeController extends Controller
      */
     public function homeAction()
     {
-        return $this->render('home/home.html.twig');
+        return $this->render('home/home.html.twig', array(
+            'questionnaires' => $this->getQuestionnaires(),
+        ));
     }
 
     /**
@@ -31,5 +33,20 @@ class HomeController extends Controller
     {
         // replace this example code with whatever you need
         return $this->render('home/information.html.twig');
+    }
+
+    private function getQuestionnaires()
+    {
+        $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
+        $qb->select('q, u')
+            ->from('AppBundle:Questionnaire', 'q')
+            ->join('q.user', 'u')
+            ->where('q.visible = true')
+            ->andWhere('LENGTH(q.name) > 0')
+            ->andWhere('LENGTH(q.description) > 0')
+            ->andWhere('q.expires > ?1')
+            ->setParameter(1, new \DateTime());
+
+        return $qb->getQuery()->getArrayResult();
     }
 }

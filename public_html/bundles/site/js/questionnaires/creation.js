@@ -36,6 +36,7 @@ $(function () {
         return {
             "id": questionnaireId,
             "questions": questions,
+            "description": $(questionnaireDetails).find('.description').val(),
             "name": $(questionnaireDetails).find('.name').val(),
             "expires": $(questionnaireDetails).find('.expires').val()
         };
