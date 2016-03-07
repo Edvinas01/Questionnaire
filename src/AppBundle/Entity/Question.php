@@ -28,7 +28,7 @@ class Question extends BaseEntity
 
     /**
      * @Assert\NotNull()
-     * @ORM\OneToMany(targetEntity="Answer", mappedBy="question",  orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="Answer", mappedBy="question", orphanRemoval=true)
      */
     private $answers;
 

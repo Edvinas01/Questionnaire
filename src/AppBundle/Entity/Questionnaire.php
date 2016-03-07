@@ -39,6 +39,11 @@ class Questionnaire extends BaseEntity
     private $visible = false;
 
     /**
+     * @ORM\OneToMany(targetEntity="Participant", mappedBy="questionnaire", orphanRemoval=true)
+     */
+    private $participants;
+
+    /**
      * @ORM\OneToMany(targetEntity="Question", mappedBy="questionnaire", orphanRemoval=true)
      */
     private $questions;
@@ -108,5 +113,10 @@ class Questionnaire extends BaseEntity
     public function setDescription($description)
     {
         $this->description = $description;
+    }
+
+    public function getParticipants()
+    {
+        return $this->participants;
     }
 }
