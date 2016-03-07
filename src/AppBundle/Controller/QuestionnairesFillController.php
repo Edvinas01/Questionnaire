@@ -61,9 +61,9 @@ class QuestionnairesFillController extends Controller
         $count = $qb->getQuery()->getSingleScalarResult();
 
         // Do not save repeating ip's
-        if ($count >= 1) {
-            return null;
-        }
+//        if ($count >= 1) {
+//            return null;
+//        }
 
         if (isset($data['answers'])) {
 
@@ -82,6 +82,7 @@ class QuestionnairesFillController extends Controller
                             array_push($fullAnswers, new ParticipantAnswer(
                                     $participant,
                                     $answer,
+                                    $question,
                                     $participantAnswer['checked'])
                             );
                         }

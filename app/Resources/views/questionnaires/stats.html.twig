@@ -1,32 +1,18 @@
 {% extends 'layouts/base.html.twig' %}
 
 {% block body %}
-    <div class="col-lg-12">
+    <div class="col-lg-12 questionnaire" data-id="{{ questionnaire.id }}">
         <h2>"{{ questionnaire.name }}" stats</h2>
         <div class="row">
-            <div class="col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Overall stats</div>
-                    <div class="panel-body">
-                        <p>
-                            {% if stats.participantCount == 0 %}
-                                sed
-                            {% else %}
-                                Congratulations, your questionnaire has been filled by {{ stats.participantCount }} unique
-                                participant(s).
-                            {% endif %}
-                        </p>
+            {% for question in questionnaire.questions %}
+                <div class="col-md-6">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">{{ question.content }}</div>
+                        <div class="panel-body questions">
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading">Some question stats</div>
-                    <div class="panel-body">
-                        <div id="container" style="min-width: 310px; height: 400px; max-width: 600px; margin: 0 auto"></div>
-                    </div>
-                </div>
-            </div>
+            {% endfor %}
         </div>
     </div>
 {% endblock %}
