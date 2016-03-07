@@ -29,7 +29,7 @@ class QuestionnairesFillController extends Controller
 
     public function getQuestionnaire($id)
     {
-        $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
+        $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
         $qb->select('q')
             ->from('AppBundle:Questionnaire', 'q')
             ->where('q.visible = true')

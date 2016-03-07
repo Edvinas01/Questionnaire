@@ -2,34 +2,42 @@
 
 {% block body %}
     <div class="col-lg-12" data-id="{{ questionnaire.id }}">
-        <div class="row">
+        <div class="row questions">
             {% for question in questionnaire.questions %}
-                <div class="col-lg-12 col-md-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Question {{ loop.index0 + 1 }}
-                        </div>
-                        <div class="panel-body">
-                            {% if question.content|length == 0 %}
-                                <h3>Question has no description</h3>
-                            {% else %}
-                                <h3>{{ question.content }}</h3>
-                            {% endif %}
-                            {% for answer in question.answers %}
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        Answer:
+                <div class="col-lg-12 col-md-12 question" data-id="{{ question.id }}">
+                    {% if question.content|length == 0 %}
+                        <h3>Question has no description</h3>
+                    {% else %}
+                        <h3>{{ loop.index }}. {{ question.content }}</h3>
+                    {% endif %}
+                    <div class="answers">
+                        {% for answer in question.answers %}
+                            <span class="{{ question.type == 'MULTIPLE' ? 'checkbox' : 'radio' }}">
+                                {% set checked = loop.index0 == 0 ? 'checked' : '' %}
+                                <label>
+                                    <input data-id="{{ answer.id }}"
+                                           type="{{ question.type == 'MULTIPLE' ? 'checkbox' : 'radio' }}"
+                                           value=""
+                                           name="{{ 'radio_' + question.id }}"
+                                           {{ checked }}>
+
+                                    {% if answer.content|length == 0 %}
+                                        N/A
+                                    {% else %}
                                         {{ answer.content }}
-                                    </div>
-                                </div>
-                            {% endfor %}
-                        </div>
+                                    {% endif %}
+                                </label>
+                            </span>
+                        {% endfor %}
                     </div>
+                    <hr>
                 </div>
             {% endfor %}
+            <button id="submit" class="btn btn-success">Submit your entry</button>
         </div>
     </div>
 {% endblock %}
 
 {% block javascript %}
+    <script type="application/javascript" src="{{ asset('bundles/site/js/questionnaires/view.js') }}"></script>
 {% endblock %}

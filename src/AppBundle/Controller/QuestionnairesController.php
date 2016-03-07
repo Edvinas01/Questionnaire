@@ -388,7 +388,12 @@ class QuestionnairesController extends Controller
                 // Update each question data.
                 foreach ($questionnaire->getQuestions() as $question) {
                     if ($question->getId() == $questionData['id']) {
-                        $question->setType($questionData['type']);
+
+                        $type = $questionData['type'];
+                        if ($type == 'MULTIPLE' || $type == 'SINGLE') {
+                            $question->setType($type);
+                        }
+
                         $question->setContent($questionData['content']);
                     }
 
