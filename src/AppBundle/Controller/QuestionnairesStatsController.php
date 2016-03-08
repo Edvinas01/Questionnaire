@@ -104,11 +104,9 @@ class QuestionnairesStatsController extends Controller
             ->join('q.user', 'u')
             ->where('q.visible = true')
             ->andWhere('q.id = ?1')
-            ->andWhere('q.expires > ?2')
-            ->andWhere('u.id = ?3')
+            ->andWhere('u.id = ?2')
             ->setParameter(1, $id)
-            ->setParameter(2, new \DateTime())
-            ->setParameter(3, $userId);
+            ->setParameter(2, $userId);
 
         $result = $qb->getQuery()->getSingleResult();
 

@@ -46,7 +46,7 @@ class User implements UserInterface
     private $role;
 
     /**
-     * @ORM\Column(type="string", length=32)
+     * @ORM\Column(type="string", length=32, nullable=true)
      */
     private $avatar;
 

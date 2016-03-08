@@ -10,7 +10,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Questionnaire extends BaseEntity
 {
-
     /**
      * @Assert\NotBlank()
      * @ORM\Column(type="string", length=32, nullable=false)
@@ -18,7 +17,7 @@ class Questionnaire extends BaseEntity
     private $name;
 
     /**
-     * @ORM\Column(type="string", length=1024)
+     * @ORM\Column(type="string", length=1024, nullable=true)
      */
     private $description;
 

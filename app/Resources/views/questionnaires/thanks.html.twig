@@ -1,0 +1,15 @@
+{% extends 'layouts/includes.html.twig' %}
+
+{% block body %}
+    <div class="col-lg-offset-2 col-lg-8">
+        <div class="text-center">
+            <img width="300px" class="img-circle img-auto" src="{{ asset('bundles/site/img/good_dogo.jpeg') }}">
+        </div>
+        <div class="text-center">
+            <h1>Thank you for filling out the questionnaire!</h1>
+            <div style="font-size: 3em">
+                <a href="{{ path('home') }}">Home</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

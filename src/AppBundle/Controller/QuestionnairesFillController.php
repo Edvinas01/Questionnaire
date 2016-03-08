@@ -9,6 +9,7 @@ use Doctrine\DBAL\Exception\ServerException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,6 +29,15 @@ class QuestionnairesFillController extends Controller
         return $this->render('questionnaires/view.html.twig', array(
             'questionnaire' => $questionnaire
         ));
+    }
+
+    /**
+     * @Method("GET")
+     * @Route("/thanks", name="thanks")
+     */
+    public function thanksViewAction()
+    {
+        return $this->render('questionnaires/thanks.html.twig');
     }
 
     /**
@@ -61,9 +71,9 @@ class QuestionnairesFillController extends Controller
         $count = $qb->getQuery()->getSingleScalarResult();
 
         // Do not save repeating ip's
-//        if ($count >= 1) {
-//            return null;
-//        }
+        if ($count >= 1) {
+            return null;
+        }
 
         if (isset($data['answers'])) {
 

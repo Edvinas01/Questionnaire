@@ -25,7 +25,7 @@ $(function () {
             data: JSON.stringify(collectData()),
             url: "/questionnaires-view/" + questionnaireId,
             success: function () {
-                //window.location.href = '/';
+                window.location.href = '/thanks';
             }
         });
     });

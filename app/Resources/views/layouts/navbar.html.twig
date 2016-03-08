@@ -13,7 +13,9 @@
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li><a href="{{ path('home') }}">Home</a></li>
-                <li><a href="{{ path('about') }}">About</a></li>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li><a href="{{ path('users') }}">Users</a></li>
+                {% endif %}
                 <li><a href="{{ path('information') }}">Information</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

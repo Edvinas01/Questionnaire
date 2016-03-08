@@ -1,0 +1,14 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block header %}
+    <link href="{{ asset('bundles/datatables/datatables.min.css') }}" rel="stylesheet"/>
+{% endblock %}
+{% block body %}
+    <div class="col-lg-12">
+        Simply editing those users mang
+    </div>
+{% endblock %}
+{% block javascript %}
+    <script type="application/javascript" src="{{ asset('bundles/datatables/datatables.min.js') }}"></script>
+    <script type="application/javascript" src="{{ asset('bundles/site/js/users/users.js') }}"></script>
+{% endblock %}

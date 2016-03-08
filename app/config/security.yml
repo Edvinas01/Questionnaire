@@ -34,5 +34,6 @@ security:
             ROLE_ADMIN:     [ROLE_USER, ROLE_MODERATOR]
 
     access_control:
-        - { path: ^/($|about|login|register), roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/($|about|login|register|thanks|questionnaires-view/*), roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/users/*, roles: ROLE_ADMIN }
         - { path: ^/*, roles: ROLE_USER }
