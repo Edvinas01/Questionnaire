@@ -3,7 +3,9 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 
 class HomeController extends Controller
 {
@@ -33,6 +35,25 @@ class HomeController extends Controller
     {
         // replace this example code with whatever you need
         return $this->render('home/information.html.twig');
+    }
+
+    /**
+     * @Method("DELETE")
+     * @Route("/moderate/questionnaire/{id}", name="delete_questionnaire_mod")
+     */
+    public function deleteQuestionnaireAction($id)
+    {
+        $this->denyAccessUnlessGranted('ROLE_MODERATOR');
+
+        $questionnaire = $this->getDoctrine()
+            ->getRepository('AppBundle:Questionnaire')
+            ->find($id);
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($questionnaire);
+        $em->flush();
+
+        return new Response();
     }
 
     private function getQuestionnaires()

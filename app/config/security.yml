@@ -36,4 +36,5 @@ security:
     access_control:
         - { path: ^/($|about|login|register|thanks|questionnaires-view/*), roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/users/*, roles: ROLE_ADMIN }
+        - { path: ^/moderate/*, roles: ROLE_MODERATOR }
         - { path: ^/*, roles: ROLE_USER }

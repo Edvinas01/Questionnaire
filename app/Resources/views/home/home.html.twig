@@ -16,6 +16,13 @@
                                    title="Fill out this questionnaire!">{{ questionnaire.name }}</a>
                             </h3>
                             <blockquote>
+                                {% if is_granted('ROLE_MODERATOR') %}
+                                    <div class="pull-right">
+                                        <button class="btn btn-danger questionnaire-delete"
+                                                data-id="{{ questionnaire.id }}">Delete
+                                        </button>
+                                    </div>
+                                {% endif %}
                                 {% if questionnaire.description|length > 0 %}
                                     <p>{{ questionnaire.description }}</p>
                                 {% else %}
@@ -39,4 +46,8 @@
             </div>
         {% endif %}
     </div>
+{% endblock %}
+
+{% block javascript %}
+    <script type="application/javascript" src="{{ asset('bundles/site/js/home/home.js') }}"></script>
 {% endblock %}
