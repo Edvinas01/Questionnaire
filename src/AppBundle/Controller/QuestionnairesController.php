@@ -126,7 +126,7 @@ class QuestionnairesController extends Controller
     {
         $questionnaire = $this->getQuestionnaire($id);
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $em->remove($questionnaire);
         $em->flush();
 
@@ -160,7 +160,7 @@ class QuestionnairesController extends Controller
         $questionnaire = $question->getQuestionnaire();
         $this->saveQuestionnaire($request, $questionnaire);
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $em->remove($question);
         $em->flush();
 
@@ -182,7 +182,7 @@ class QuestionnairesController extends Controller
         $answer = new Answer();
         $answer->setQuestion($question);
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $em->persist($answer);
         $em->flush();
 
@@ -203,7 +203,7 @@ class QuestionnairesController extends Controller
         $question = $answer->getQuestion();
         $this->saveQuestionnaire($request, $question->getQuestionnaire());
 
-        $em = $this->getDoctrine()->getEntityManager();
+        $em = $this->getDoctrine()->getManager();
         $em->remove($answer);
         $em->flush();
 
@@ -311,7 +311,7 @@ class QuestionnairesController extends Controller
         $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
 
         // Query the question.
-        $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
+        $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
         $qb->select('qu')
             ->from('AppBundle:Question', 'qu')
             ->join('qu.questionnaire', 'q')
@@ -341,7 +341,7 @@ class QuestionnairesController extends Controller
         $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
 
         // Query the question.
-        $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
+        $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
         $qb->select('a')
             ->from('AppBundle:Answer', 'a')
             ->join('a.question', 'qu')
@@ -429,7 +429,7 @@ class QuestionnairesController extends Controller
         $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
 
         // Query the questionnaires
-        $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
+        $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
         $qb->select('q')
             ->from('AppBundle:Questionnaire', 'q')
             ->join('q.user', 'u')

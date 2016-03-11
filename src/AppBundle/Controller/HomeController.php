@@ -49,7 +49,7 @@ class HomeController extends Controller
 
     private function getQuestionnaires()
     {
-        $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
+        $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
         $qb->select('q, u')
             ->from('AppBundle:Questionnaire', 'q')
             ->join('q.user', 'u')

@@ -63,7 +63,7 @@ class ProfileController extends Controller
         $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
 
         // Query the questionnaires
-        $qb = $this->getDoctrine()->getEntityManager()->createQueryBuilder();
+        $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
         $qb->select('q')
             ->from('AppBundle:Questionnaire', 'q')
             ->join('q.user', 'u')
