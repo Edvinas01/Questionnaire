@@ -3,6 +3,12 @@
 <head>
     {% include 'layouts/header.html.twig' %}
     {% block header %}{% endblock %}
+    <title>
+        Questionnaires
+        {% if pageTitle is defined %}
+            - {{ pageTitle }}
+        {% endif %}
+    </title>
 </head>
 <body>
 {% include 'layouts/navbar.html.twig' %}
