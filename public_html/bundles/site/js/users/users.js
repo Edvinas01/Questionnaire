@@ -17,11 +17,27 @@ $(function () {
     $('.user-delete').click(function () {
         var id = $(this).parents('tr').data('id');
 
-        $.ajax({
-            type: "DELETE",
-            url: "/users/" + id,
-            success: function () {
-                location.reload();
+        bootbox.dialog({
+            message: "Are you sure you want to delete this user?",
+            title: "Delete user",
+            buttons: {
+                yes: {
+                    label: "Delete",
+                    className: "btn-danger",
+                    callback: function () {
+                        $.ajax({
+                            type: "DELETE",
+                            url: "/users/" + id,
+                            success: function () {
+                                location.reload();
+                            }
+                        });
+                    }
+                },
+                no: {
+                    label: "Cancel",
+                    className: "btn-success"
+                }
             }
         });
     });

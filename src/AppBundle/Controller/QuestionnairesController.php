@@ -371,6 +371,14 @@ class QuestionnairesController extends Controller
         // Parse json.
         $data = json_decode($request->getContent(), true);
 
+        $ignore = $request->query->get('ignore');
+        if ($ignore) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($questionnaire);
+            $em->flush();
+            return null;
+        }
+
         $questionnaire->setName($data['name']);
         $questionnaire->setDescription($data['description']);
         $expires = $data['expires'];
@@ -408,7 +416,6 @@ class QuestionnairesController extends Controller
                 }
             }
         }
-
 
         // Persist questionnaire.
         $em = $this->getDoctrine()->getManager();

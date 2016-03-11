@@ -29,15 +29,6 @@ class HomeController extends Controller
     }
 
     /**
-     * @Route("/information", name="information")
-     */
-    public function informationAction()
-    {
-        // replace this example code with whatever you need
-        return $this->render('home/information.html.twig');
-    }
-
-    /**
      * @Method("DELETE")
      * @Route("/moderate/questionnaire/{id}", name="delete_questionnaire_mod")
      */

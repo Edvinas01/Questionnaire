@@ -42,6 +42,27 @@ $(function () {
         };
     }
 
+    function notify(title, message, type) {
+        $.notify({
+            icon: 'glyphicon glyphicon-info-sign',
+            title: title,
+            message: message
+        },{
+            type: type == null ? "success" : type,
+            delay: 2000,
+            allow_dismiss: true,
+            newest_on_top: false,
+            placement: {
+                from: "bottom",
+                align: "right"
+            },
+            animate: {
+                enter: 'animated fadeIn',
+                exit: 'animated fadeOut'
+            }
+        });
+    }
+
     var questions = $('#questions');
     var answers = $('.answers');
 
@@ -61,12 +82,31 @@ $(function () {
 
     questionnaire.find('.questionnaire-visibility').click(function () {
         var show = $(this).data('action');
-        $.ajax({
-            type: "POST",
-            data: JSON.stringify(collectData()),
-            url: "/questionnaires/" + questionnaireId + "/publish?show=" + show,
-            success: function () {
-                location.reload();
+        var isShow = show == 'show';
+
+        // show
+        bootbox.dialog({
+            message: 'Are you sure you want to ' + (isShow ? 'publish' : 'hide') + ' your questionnaire?',
+            title: isShow ? 'Publish'  : "Hide",
+            buttons: {
+                yes: {
+                    label: isShow ? 'Publish' : 'Hide',
+                    className: "btn-success",
+                    callback: function () {
+                        $.ajax({
+                            type: "POST",
+                            data: JSON.stringify(collectData()),
+                            url: "/questionnaires/" + questionnaireId + "/publish?show=" + show,
+                            success: function () {
+                                location.reload();
+                            }
+                        });
+                    }
+                },
+                no: {
+                    label: "Cancel",
+                    className: "btn-danger"
+                }
             }
         });
     });
@@ -88,6 +128,8 @@ $(function () {
             url: "/questionnaires/" + questionnaireId + "/add-question",
             success: function (response) {
                 questions.html(response);
+
+                notify('Added: ', 'New question has been added');
             }
         });
     });
@@ -103,6 +145,8 @@ $(function () {
             url: "/questions/" + id + "/remove",
             success: function (response) {
                 questions.html(response);
+
+                notify('Removed: ', 'A question has been removed');
             }
         });
     });
@@ -119,6 +163,8 @@ $(function () {
             url: "/questions/" + questionId + "/add-answer",
             success: function (response) {
                 answers.html(response);
+
+                notify('Added: ', 'Added a new answer');
             }
         });
     });
@@ -135,6 +181,8 @@ $(function () {
             url: "/answers/" + id + "/remove",
             success: function (response) {
                 answers.html(response);
+
+                notify('Added: ', 'Removed an existing answer');
             }
         });
     });
