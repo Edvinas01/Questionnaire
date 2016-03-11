@@ -75,7 +75,22 @@ class UserController extends Controller
     {
         $user = $this->fetchUser($id);
 
+        // Clear user questionnaires.
+        $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
+        $questionnaires = $qb->select('q')
+            ->from('AppBundle:Questionnaire', 'q')
+            ->join('q.user', 'u')
+            ->where('u.id = ?1')
+            ->setParameter(1, $id)
+            ->getQuery()
+            ->getResult();
+
+        // Remove the user and his questionnaires.
         $em = $this->getDoctrine()->getManager();
+
+        foreach ($questionnaires as $questionnaire) {
+            $em->remove($questionnaire);
+        }
         $em->remove($user);
         $em->flush();
 
