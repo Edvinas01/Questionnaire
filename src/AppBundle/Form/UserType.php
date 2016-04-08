@@ -15,16 +15,16 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\EmailType', $this->placeholder('Enter a valid email'))
-            ->add('username', 'Symfony\Component\Form\Extension\Core\Type\TextType', $this->placeholder('Enter a valid username'))
+            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\EmailType', $this->placeholder('Pašto adresas', 'Pašto adresas'))
+            ->add('username', 'Symfony\Component\Form\Extension\Core\Type\TextType', $this->placeholder('Slapyvardis', 'Slapyvardis'))
             ->add('password', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType',
                 array(
                     'type' => 'Symfony\Component\Form\Extension\Core\Type\PasswordType',
                     'first_options' => array(
-                        'label' => 'Password', 'attr' => array('placeholder' => 'Enter your password')),
+                        'label' => 'Slaptažodis', 'attr' => array('placeholder' => 'Įveskite slaptažodį')),
 
                     'second_options' => array(
-                        'label' => 'Repeat Password', 'attr' => array('placeholder' => 'Repeat your password')),
+                        'label' => 'Pakartoti slaptažodį', 'attr' => array('placeholder' => 'Pakatrokite slaptažodį')),
                 )
             );
     }
@@ -36,9 +36,10 @@ class UserType extends AbstractType
         ));
     }
 
-    private function placeholder($text)
+    private function placeholder($text, $label = '')
     {
         return array(
+            'label' => $label,
             'attr' => array(
                 'placeholder' => $text,
             )

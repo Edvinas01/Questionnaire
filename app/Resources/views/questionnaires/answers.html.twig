@@ -1,12 +1,12 @@
-<h3>Answers</h3>
+<h3>Atsakymų variantai</h3>
 {% if question.answers is empty %}
     <button type="button" class="btn btn-success add-answer">
-        Add answer
+        Pridėti atsakymo variantą
     </button>
 {% endif %}
 {% for answer in question.answers %}
     <div class="input-group answer" data-id="{{ answer.id }}">
-        <input type="text" value="{{ answer.content }}" data-id="{{ answer.id }}" placeholder="Answer {{ loop.index0 + 1 }}" class="form-control">
+        <input type="text" value="{{ answer.content }}" data-id="{{ answer.id }}" placeholder="Atsakymo variantas {{ loop.index0 + 1 }}" class="form-control">
         <span class="input-group-btn">
             <button type="button" class="btn btn-success add-answer">
                 <span class="glyphicon glyphicon-plus"></span>

@@ -16,6 +16,19 @@ $(function () {
     }
 
     function pieChart(container, data) {
+
+        var allZero = true;
+        $.each(data, function (i, obj) {
+            if (obj.y != 0) {
+                allZero = false;
+            }
+        });
+
+        if (allZero) {
+            console.warn('Nothing to draw for pie chart');
+            return;
+        }
+
         $(container).highcharts({
             chart: {
                 plotBackgroundColor: null,
@@ -30,7 +43,7 @@ $(function () {
                 text: ''
             },
             tooltip: {
-                pointFormat: '<b>{point.percentage:.1f}%</b> of participants picked yes'
+                pointFormat: '<b>{point.percentage:.1f}%</b> iš dalyvių pažymėjo taip'
             },
             plotOptions: {
                 pie: {
@@ -68,7 +81,7 @@ $(function () {
                 min: 0,
                 allowDecimals: false,
                 title: {
-                    text: 'Answers'
+                    text: 'Atsakymai'
                 }
             },
             plotOptions: {
@@ -78,11 +91,11 @@ $(function () {
                 }
             },
             series: [{
-                name: 'Yes',
+                name: 'Taip',
                 data: trueCount
 
             }, {
-                name: 'No',
+                name: 'Ne',
                 data: falseCount
             }]
         });
@@ -124,5 +137,9 @@ $(function () {
 
     $('.open-answer').each(function (i, table) {
         $(table).DataTable();
+    });
+
+    $('.show-opinions').click(function () {
+        $(this).closest('div').find('.opinions-modal').modal();
     });
 });

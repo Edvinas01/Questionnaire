@@ -7,23 +7,23 @@
 <form action="{{ path('login_check') }}" method="post">
 
     <div class="form-group">
-        <label for="username" class="control-label required">Username</label>
-        <input type="text" class="form-control" id="username" name="_username" placeholder="Enter your username" value="{{ last_username }}"/>
+        <label for="username" class="control-label required">Slapyvardis</label>
+        <input type="text" class="form-control" id="username" name="_username" placeholder="Įveskite slapyvardį" value="{{ last_username }}"/>
     </div>
 
     <div class="form-group">
-        <label for="password" class="control-label required">Password</label>
-        <input type="password" class="form-control" id="password" name="_password" placeholder="Enter your password" value="{{ last_username }}"/>
+        <label for="password" class="control-label required">Slaptažodis</label>
+        <input type="password" class="form-control" id="password" name="_password" placeholder="Įveskite slaptažodį" value="{{ last_username }}"/>
     </div>
 
     <div style="margin-top:10px" class="form-group">
-        <button type="submit" class="btn btn-success">Login</button>
+        <button type="submit" class="btn btn-success">Prisijungti</button>
     </div>
     <div class="form-group">
         <div style="border-top: 1px solid#888; padding-top:15px; font-size:85%" >
-            Don't have an account!
+            Naujas vartotojas?
             <a href="{{ path('user_registration') }}">
-                Sign Up Here
+                Kurti naują paskyrą
             </a>
         </div>
     </div>

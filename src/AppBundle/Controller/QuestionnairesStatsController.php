@@ -62,6 +62,12 @@ class QuestionnairesStatsController extends Controller
             $falseCount = 0;
             foreach ($participants as $participant) {
                 foreach ($participant->getAnswers() as $participantAnswer) {
+
+                    // Do not count opinion in stats.
+                    if ($participantAnswer->getOpinion() != null) {
+                        continue;
+                    }
+
                     if ($participantAnswer->getAnswer()->getId() == $answer->getId()) {
 
                         if ($participantAnswer->getChecked() == true) {

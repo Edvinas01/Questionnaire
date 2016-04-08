@@ -6,11 +6,11 @@ $(function () {
         var id = $(this).closest('tr').data('id');
 
         bootbox.dialog({
-            message: 'Are you sure you want to delete this questionnaire?',
-            title: 'Delete',
+            message: 'Ar jūs tikrai norite ištrinti šį klausimyną?',
+            title: 'Trinti',
             buttons: {
                 yes: {
-                    label: 'Delete',
+                    label: 'Trinti',
                     className: "btn-danger",
                     callback: function () {
                         $.ajax({
@@ -23,7 +23,7 @@ $(function () {
                     }
                 },
                 no: {
-                    label: "Cancel",
+                    label: "Atšaukti",
                     className: "btn-success"
                 }
             }
@@ -37,11 +37,11 @@ $(function () {
         var isShow = show == 'show';
 
         bootbox.dialog({
-            message: 'Are you sure you want to ' + (isShow ? 'publish' : 'hide') + ' your questionnaire?',
-            title: isShow ? 'Publish'  : "Hide",
+            message: 'Ar jūs tikrai norite ' + (isShow ? 'publikuoti' : 'slėpti') + ' šį klausimyną?',
+            title: isShow ? 'Publikuoti'  : "Slėpti",
             buttons: {
                 yes: {
-                    label: isShow ? 'Publish' : 'Hide',
+                    label: isShow ? 'Publikuoti' : 'Slėpti',
                     className: "btn-success",
                     callback: function () {
                         $.ajax({
@@ -54,7 +54,7 @@ $(function () {
                     }
                 },
                 no: {
-                    label: "Cancel",
+                    label: "Ašaukti",
                     className: "btn-danger"
                 }
             }

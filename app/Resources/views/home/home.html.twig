@@ -1,11 +1,11 @@
 {% extends 'layouts/base.html.twig' %}
-{% set pageTitle = 'home' %}
+{% set pageTitle = 'namai' %}
 
 {% block body %}
     <div class="col-lg-12">
         {% if questionnaires|length > 0 %}
             <div class="page-header">
-                <h1 id="containers">Recently updated questionnaires</h1>
+                <h1 id="containers">Naujausi klausimynai</h1>
             </div>
             <div class="questionnaires">
                 {% for questionnaire in questionnaires %}
@@ -20,20 +20,20 @@
                                 {% if is_granted('ROLE_MODERATOR') %}
                                     <div class="pull-right">
                                         <button class="btn btn-danger questionnaire-delete"
-                                                data-id="{{ questionnaire.id }}">Delete
+                                                data-id="{{ questionnaire.id }}">Naikinti
                                         </button>
                                     </div>
                                 {% endif %}
                                 {% if questionnaire.description|length > 0 %}
                                     <p>{{ questionnaire.description }}</p>
                                 {% else %}
-                                    <p>No description for this questionnaire :(</p>
+                                    <p>Šis klausimynas neturi aprašymo</p>
                                 {% endif %}
                                 <footer>
-                                    by
+                                    autorius
                                     <cite title="Cite">
-                                        <span style="color: #ff7701">{{ user.username }}</span>, valid
-                                        until {{ questionnaire.expires|date }}
+                                        <span style="color: #ff7701">{{ user.username }}</span>, galioja
+                                        iki {{ questionnaire.expires|date('Y-m-d') }}
                                     </cite>
                                 </footer>
                             </blockquote>
@@ -43,7 +43,7 @@
             </div>
         {% else %}
             <div class="page-header">
-                <h1 id="containers">Looks like there are no new viewable questionnaires at this moment</h1>
+                <h1 id="containers">Šiuo metu nėra naujų klausimynų</h1>
             </div>
         {% endif %}
     </div>

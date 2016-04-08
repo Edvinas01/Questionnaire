@@ -8,19 +8,19 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="/">Questionnaires</a>
+            <a class="navbar-brand" href="/">Klausimynai</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li><a href="{{ path('home') }}">Home</a></li>
                 {% if is_granted('ROLE_ADMIN') %}
-                    <li><a href="{{ path('users') }}">Users</a></li>
+                    <li><a href="{{ path('users') }}">Vartotojai</a></li>
                 {% endif %}
-                <li><a href="{{ path('about') }}">About</a></li>
+                <li><a href="{{ path('about') }}">Apie</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if app.user %}
-                    <a class="btn btn-primary navbar-btn navbar-left" href="javascript:;" data-toggle="modal" data-target="#create-questionnaire">Create questionnaire</a>
+                    <a class="btn btn-primary navbar-btn navbar-left" href="javascript:;" data-toggle="modal" data-target="#create-questionnaire">Sukurti klausimyną</a>
                     <li class="dropdown">
                         <a aria-expanded="false"
                            aria-haspopup="true"
@@ -31,12 +31,12 @@
                             {{ app.user.username }} <span class="caret"></span>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a href="{{ path('user_profile') }}">Profile</a></li>
-                            <li><a href="{{ path('user_logout') }}">Logout</a></li>
+                            <li><a href="{{ path('user_profile') }}">Valdymas</a></li>
+                            <li><a href="{{ path('user_logout') }}">Atsijungti</a></li>
                         </ul>
                     </li>
                 {% else %}
-                    <a class="btn btn-default navbar-btn" href="{{ path('user_login') }}">Login</a>
+                    <a class="btn btn-default navbar-btn" href="{{ path('user_login') }}">Prisijungti</a>
                 {% endif %}
             </ul>
         </div>
@@ -48,30 +48,30 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Create a new questionnaire</h4>
+                <h4 class="modal-title">Sukurti naują klausimyną</h4>
             </div>
             <form method="POST" action="{{ path('questionnaires_create') }}">
                 <div class="modal-body">
                     <div class="form-group">
-                        <label for="name" class="control-label">Name</label>
-                        <input type="text" placeholder="Questionnaire name" id="name" name="name" class="form-control">
+                        <label for="name" class="control-label">Pavadinimas</label>
+                        <input type="text" placeholder="Klausimyno pavadinimas" id="name" name="name" class="form-control">
                     </div>
                     <div class="form-group">
-                        <label class="control-label" for="expires">Questionnaire duration</label>
+                        <label class="control-label" for="expires">Klausimyno galiojimo laikas</label>
                         <select id="expires" name="expires" class="form-control">
-                            <option value="1" selected>One day</option>
-                            <option value="2">Two days</option>
-                            <option value="3">Three days</option>
-                            <option value="4">Four days</option>
-                            <option value="5">Five days</option>
-                            <option value="6">Six days</option>
-                            <option value="7">A week</option>
+                            <option value="1" selected>Diena</option>
+                            <option value="2">Dvi dienos</option>
+                            <option value="3">Trys dienos</option>
+                            <option value="4">Keturios dienos</option>
+                            <option value="5">Penkios dienos</option>
+                            <option value="6">Šešios dienos</option>
+                            <option value="7">Savaitė</option>
                         </select>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="submit" class="btn btn-success">Create</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Sukurti</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Atšaukti</button>
                 </div>
             </form>
         </div>

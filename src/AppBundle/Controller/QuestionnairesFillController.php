@@ -76,49 +76,63 @@ class QuestionnairesFillController extends Controller
         }
 
         if (isset($data['answers'])) {
-
             $fullAnswers = array();
-            $count = 0;
 
             // Construct participant.
             $participant = new Participant(new \DateTime());
 
             // Iterate over the questionnaire data.
             foreach ($questionnaire->getQuestions() as $question) {
-                foreach ($question->getAnswers() as $answer) {
-                    $count++;
-                    foreach ($data['answers'] as $participantAnswer) {
-                        if ($answer->getId() == $participantAnswer['id']) {
-                            $constructed = new ParticipantAnswer(
-                                $participant,
-                                $answer,
-                                $question);
 
-                            if ($question->getType() == 'OPEN') {
-                                $constructed->setTextAnswer($participantAnswer['textAnswer']);
-                            } else {
-                                $constructed->setChecked($participantAnswer['checked']);
-                            }
-                            array_push($fullAnswers, $constructed);
+                $other = false;
+                foreach ($question->getAnswers() as $answer) {
+                    if ($other) {
+                        break;
+                    }
+
+                    $constructed = new ParticipantAnswer(
+                        $participant,
+                        $answer,
+                        $question);
+
+                    foreach ($data['answers'] as $participantAnswer) {
+
+                        if (isset($participantAnswer['other']) &&
+
+                            // Opinion for question (other field).
+                            $question->getId() == $participantAnswer['questionId']) {
+                            $constructed->setOpinion($participantAnswer['other']);
+                            $other = true;
+                            break;
+
+                        } else if (isset($participantAnswer['questionId']) &&
+
+                            // Open question type.
+                            $question->getType() == 'OPEN' &&
+                            $question->getId() == $participantAnswer['questionId']) {
+                            $constructed->setTextAnswer($participantAnswer['textAnswer']);
+                            break;
+
+                        } else if (isset($participantAnswer['id']) &&
+
+                            // All other types.
+                            $answer->getId() == $participantAnswer['id']) {
+                            $constructed->setChecked($participantAnswer['checked']);
+                            break;
                         }
                     }
+                    array_push($fullAnswers, $constructed);
                 }
             }
 
-            // Questions must be fully answered.
-            if (count($fullAnswers) == $count) {
+            $participant->setQuestionnaire($questionnaire);
+            $participant->setIp($ip);
+            $participant->setAnswers($fullAnswers);
 
-                $participant->setQuestionnaire($questionnaire);
-                $participant->setIp($ip);
-                $participant->setAnswers($fullAnswers);
-
-                // Persist participant.
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($participant);
-                $em->flush();
-            } else {
-                return new Response("There was an error while submitting your data", 500);
-            }
+            // Persist participant.
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($participant);
+            $em->flush();
         }
         return null;
     }

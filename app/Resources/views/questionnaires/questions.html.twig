@@ -1,5 +1,5 @@
 {% for question in questionnaire.questions %}
-    <h3>Question {{ loop.index0 + 1 }}</h3>
+    <h3>Klausimas {{ loop.index0 + 1 }}</h3>
     <div class="well question" data-id="{{ question.id }}">
         <div class="row">
             <div class="col-md-9">
@@ -12,29 +12,29 @@
                         </div>
                     </div>
                     <div class="col-md-7 question-text">
-                        <h3>Question text</h3>
-                        <textarea rows="5" class="form-control description" placeholder="Enter your question description">{{ question.content }}</textarea>
+                        <h3>Klausimo turinys</h3>
+                        <textarea rows="5" class="form-control description" placeholder="Įveskite klausimo turinį">{{ question.content }}</textarea>
                     </div>
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="row actions">
                     <div class="col-md-12">
-                        <h3>Options</h3>
+                        <h3>Veiksmai</h3>
                     </div>
                     <div class="col-md-12 action-row">
                         <select name="type" class="form-control type type-select">
-                            <option {{ question.type == 'MULTPLE' ? 'selected="selected"' : '' }} value="MULTIPLE">Multiple selection</option>
-                            <option {{ question.type == 'SINGLE' ? 'selected="selected"' : '' }} value="SINGLE">Single selection</option>
-                            <option {{ question.type == 'OPEN' ? 'selected="selected"' : '' }} value="OPEN">Open question</option>
+                            <option {{ question.type == 'MULTPLE' ? 'selected="selected"' : '' }} value="MULTIPLE">Kelių variantų</option>
+                            <option {{ question.type == 'SINGLE' ? 'selected="selected"' : '' }} value="SINGLE">Vieno varianto</option>
+                            <option {{ question.type == 'OPEN' ? 'selected="selected"' : '' }} value="OPEN">Atviro tipo</option>
                         </select>
                     </div>
                     <div class="col-md-12 action-row">
-                        <button class="btn btn-success btn-block add-question">Add question</button>
+                        <button class="btn btn-success btn-block add-question">Pridėti klausimą</button>
                     </div>
                     {% if questionnaire.questions|length > 1 %}
                         <div class="col-md-12 action-row">
-                            <button class="btn btn-danger btn-block remove-question">Remove question</button>
+                            <button class="btn btn-danger btn-block remove-question">Pašalinti klausimą</button>
                         </div>
                     {% endif %}
                 </div>

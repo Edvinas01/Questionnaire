@@ -120,11 +120,11 @@ $(function () {
 
         // show
         bootbox.dialog({
-            message: 'Are you sure you want to ' + (isShow ? 'publish' : 'hide') + ' your questionnaire?',
-            title: isShow ? 'Publish'  : "Hide",
+            message: 'Ar jūs tikrai norite ' + (isShow ? 'publikuoti' : 'slėpti') + ' savo klausimyną?',
+            title: isShow ? 'Publikuoti'  : "Slėpti",
             buttons: {
                 yes: {
-                    label: isShow ? 'Publish' : 'Hide',
+                    label: isShow ? 'Publikuoti' : 'Slėpti',
                     className: "btn-success",
                     callback: function () {
                         $.ajax({
@@ -138,7 +138,7 @@ $(function () {
                     }
                 },
                 no: {
-                    label: "Cancel",
+                    label: "Atšaukti",
                     className: "btn-danger"
                 }
             }
@@ -164,7 +164,7 @@ $(function () {
                 questions.html(response);
 
                 setupSelects();
-                notify('Added: ', 'New question has been added');
+                notify('Pridėta: ', 'Sukurtas naujas klausimas');
             }
         });
     });
@@ -182,7 +182,7 @@ $(function () {
                 questions.html(response);
 
                 setupSelects();
-                notify('Removed: ', 'A question has been removed');
+                notify('Pašalinta: ', 'Klausimas pašalintas');
             }
         });
     });
@@ -200,7 +200,7 @@ $(function () {
             success: function (response) {
                 answers.html(response);
 
-                notify('Added: ', 'Added a new answer');
+                notify('Pridėta: ', 'Pridėtas naujas atsakymo variantas');
             }
         });
     });
@@ -218,7 +218,7 @@ $(function () {
             success: function (response) {
                 answers.html(response);
 
-                notify('Added: ', 'Removed an existing answer');
+                notify('Pašalinta: ', 'Pašalintas atsakymo variantas');
             }
         });
     });

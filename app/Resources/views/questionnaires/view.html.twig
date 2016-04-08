@@ -1,48 +1,59 @@
 {% extends 'layouts/base.html.twig' %}
-{% set pageTitle = 'view' %}
+{% set pageTitle = 'pildyti' %}
 
 {% block body %}
     <div class="col-lg-12 questionnaire" data-id="{{ questionnaire.id }}">
-        <div class="row questions">
-            {% for question in questionnaire.questions %}
-                <div class="col-lg-12 col-md-12 question" data-id="{{ question.id }}">
-                    {% if question.content|length == 0 %}
-                        <h3>Question has no description</h3>
-                    {% else %}
-                        <h3>{{ loop.index }}. {{ question.content }}</h3>
-                    {% endif %}
-                    <div class="answers">
-                        {% for answer in question.answers %}
+        <form id="questions-form">
+            <div class="row questions">
+                {% for question in questionnaire.questions %}
+                    <div class="col-lg-12 col-md-12 question" data-id="{{ question.id }}">
+                        {% if question.content|length == 0 %}
+                            <h3>Klausimas neturi aprašymo</h3>
+                        {% else %}
+                            <h3>{{ loop.index }}. {{ question.content }}</h3>
+                        {% endif %}
+                        <div class="answers">
                             {% if question.type == 'OPEN' %}
-                                <textarea data-id="{{ answer.id }}" rows="5" class="form-control answer" data-type="OPEN" placeholder="Enter your answer"></textarea>
+                                <textarea required
+                                          rows="5"
+                                          class="form-control answer"
+                                          data-type="OPEN"
+                                          data-question-id="{{ question.id }}"
+                                          placeholder="Įveskite savo atsakymą"></textarea>
                             {% else %}
-                                <span class="{{ question.type == 'MULTIPLE' ? 'checkbox' : 'radio' }}">
-                                {% set checked = loop.index0 == 0 ? 'checked' : '' %}
-                                    <label>
-                                        <input data-id="{{ answer.id }}"
-                                               type="{{ question.type == 'MULTIPLE' ? 'checkbox' : 'radio' }}"
-                                               value=""
-                                               name="{{ 'radio_' + question.id }}"
-                                                {{ checked }}
-                                               class="answer">
+                                {% for answer in question.answers %}
+                                    <span class="{{ question.type == 'MULTIPLE' ? 'checkbox' : 'radio' }}">
+                                        <label>
+                                            <input data-id="{{ answer.id }}"
+                                                   type="{{ question.type == 'MULTIPLE' ? 'checkbox' : 'radio' }}"
+                                                   value=""
+                                                    {{ question.type == 'SINGLE' ? 'required' : '' }}
+                                                   name="{{ 'radio_' + question.id }}"
+                                                   class="answer">
 
-                                        {% if answer.content|length == 0 %}
-                                            N/A
-                                        {% else %}
-                                            {{ answer.content }}
-                                        {% endif %}
-                                    </label>
-                            </span>
+                                            {% if answer.content|length == 0 %}
+                                                N/A
+                                            {% else %}
+                                                {{ answer.content }}
+                                            {% endif %}
+                                        </label>
+                                    </span>
+                                {% endfor %}
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <input class="form-control input-sm other" placeholder="Papildomas"/>
+                                    </div>
+                                </div>
                             {% endif %}
-                        {% endfor %}
+                        </div>
+                        <hr>
                     </div>
-                    <hr>
+                {% endfor %}
+                <div class="col-lg-12">
+                    <button id="submit" type="submit" class="btn btn-success">Pateikti</button>
                 </div>
-            {% endfor %}
-            <div class="col-lg-12">
-                <button id="submit" class="btn btn-success">Submit your entry</button>
             </div>
-        </div>
+        </form>
     </div>
 {% endblock %}
 

@@ -14,16 +14,16 @@ class UserEditType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\EmailType', $this->placeholder('Enter a valid email'))
+            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\EmailType', $this->placeholder('Įveskite pašto adresą', 'Paštas'))
             ->add('password', 'Symfony\Component\Form\Extension\Core\Type\RepeatedType',
                 array(
                     'type' => 'Symfony\Component\Form\Extension\Core\Type\PasswordType',
                     'required' => false,
                     'first_options' => array(
-                        'label' => 'Password', 'attr' => array('placeholder' => 'Enter your password to change')),
+                        'label' => 'Slaptažodis', 'attr' => array('placeholder' => 'Įveskite slaptažodį jeigu norite pakeisti')),
 
                     'second_options' => array(
-                        'label' => 'Repeat Password', 'attr' => array('placeholder' => 'Repeat your password')),
+                        'label' => 'Pakartoti slaptažodį', 'attr' => array('placeholder' => 'Pakartokite slaptažodį')),
                 )
             );
     }
@@ -35,9 +35,10 @@ class UserEditType extends AbstractType
         ));
     }
 
-    private function placeholder($text)
+    private function placeholder($text, $label = '')
     {
         return array(
+            'label' => $label,
             'attr' => array(
                 'placeholder' => $text,
             )

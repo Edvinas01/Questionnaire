@@ -1,5 +1,5 @@
 {% extends 'layouts/base.html.twig' %}
-{% set pageTitle = 'stats' %}
+{% set pageTitle = 'statistikos' %}
 
 {% block header %}
     <link href="{{ asset('bundles/datatables/datatables.min.css') }}" rel="stylesheet"/>
@@ -9,9 +9,9 @@
         {% if questionnaire.participants|length > 0 %}
             <h2>"{{ questionnaire.name }}" stats</h2>
             <h4>
-                Congratulations, your questionnaire has been answered by {{ questionnaire.participants|length }}
-                {{ questionnaire.participants|length == 1 ? 'participant' : 'participants' }}!
-                Here are the statistics for the answers
+                Sveikiname, jūsų klausimyną astakė {{ questionnaire.participants|length }}
+                {{ questionnaire.participants|length == 1 ? 'žmogus' : 'žmonės' }}!
+                Štai šio klausimyno statistikos
             </h4>
             <div class="row">
                 {% for question in questionnaire.questions %}
@@ -29,7 +29,7 @@
                                         <thead>
                                         <tr>
                                             <th>IP</th>
-                                            <th>Answer</th>
+                                            <th>Atsakymas</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -47,9 +47,43 @@
                                     </table>
                                 </div>
                             {% else %}
-                                <div class="panel-body questions" data-type="{{ question.type }}"></div>
+                                <div class="panel-body questions" data-type="{{ question.type }}">
+                                    <h1>Nėra duomenų</h1>
+                                </div>
                             {% endif %}
                             <div class="panel-footer">
+                                {% if question.type != 'OPEN' %}
+                                    <button class="btn btn-primary show-opinions">Peržiūrėti nuomones</button>
+                                    <div class="modal fade opinions-modal" role="dialog">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title">Išreikštos nuomonės</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    {% set count = 0 %}
+                                                    <ul>
+                                                        {% for participant in questionnaire.participants %}
+                                                            {% for answer in participant.answers %}
+                                                                {% if answer.question.id == question.id and answer.opinion|length > 0 %}
+                                                                    <li>{{ answer.opinion }}</li>
+                                                                    {% set count = count + 1 %}
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        {% endfor %}
+                                                    </ul>
+                                                    {% if count == 0 %}
+                                                        <h1>Nėra duomenų</h1>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Uždaryti</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -60,7 +94,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h4>
-                                Participants that have filled your questionnaire
+                                Šis klausimynas buvo užpildytas iš šių IP adresų
                             </h4>
                         </div>
                         <div class="panel-body">
@@ -68,7 +102,7 @@
                                 <thead>
                                 <tr>
                                     <th>IP</th>
-                                    <th>Answered at</th>
+                                    <th>Pildymo data</th>
                                 </tr>
                                 </thead>
                                 <tbody>

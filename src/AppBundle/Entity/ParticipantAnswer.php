@@ -38,6 +38,11 @@ class ParticipantAnswer extends BaseEntity
      */
     private $participant;
 
+    /**
+     * @ORM\Column(type="string", length=512, nullable=true)
+     */
+    private $opinion;
+
     public function __construct($participant, $answer, $question)
     {
         $this->question = $question;
@@ -88,5 +93,15 @@ class ParticipantAnswer extends BaseEntity
     public function setTextAnswer($textAnswer)
     {
         $this->textAnswer = $textAnswer;
+    }
+
+    public function getOpinion()
+    {
+        return $this->opinion;
+    }
+
+    public function setOpinion($opinion)
+    {
+        $this->opinion = $opinion;
     }
 }

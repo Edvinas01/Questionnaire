@@ -1,23 +1,24 @@
 {% extends 'layouts/base.html.twig' %}
-{% set pageTitle = 'about' %}
+{% set pageTitle = 'apie' %}
 
 {% block body %}
     <div class="col-lg-12">
         <div class="jumbotron">
-            <h1>Information</h1>
+            <h1>Informacija</h1>
             <p>
-                This is a website to create anonymous questionnaires and view their stats.
+                Ši svetainė leidžia kurti klausimynus ir peržiūrėti jų statistikas.
                 {% if app.user %}
-                    To create a questionnaire all you have to do is to click
+                    Norint sukurti naują klausimyną, spauskite
                     <a class="btn btn-primary btn-xs"
                        href="javascript:;"
                        data-toggle="modal"
-                       data-target="#create-questionnaire">this</a>
-                    button.
+                       data-target="#create-questionnaire">šį</a>
+                    mygtuką.
                 {% else %}
-                    To create a new questionnaire you first must have an account, you can create a new account
+                    Norint sukurti naują klausimyną, pirma reikia susikurti vartotojo paskyrą, jūs galite susikurti
+                    naują paskyrą
                     <a class="btn btn-primary btn-xs"
-                       href="{{ path('user_registration') }}">here</a>
+                       href="{{ path('user_registration') }}">čia</a>
                 {% endif %}
             </p>
         </div>
