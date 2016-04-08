@@ -38,13 +38,14 @@ class QuestionnairesStatsController extends Controller
      */
     public function getStats($id)
     {
-
         $questionnaire = $this->getQuestionnaire($id);
         $participants = $questionnaire->getParticipants();
 
         $questions = array();
         foreach ($questionnaire->getQuestions() as $question) {
-            array_push($questions, new QuestionStat($question, $this->getQuestionStats($question, $participants)));
+            if ($question->getType() != 'OPEN') {
+                array_push($questions, new QuestionStat($question, $this->getQuestionStats($question, $participants)));
+            }
         }
 
         $serializer = $this->container->get('serializer');

@@ -28,17 +28,21 @@ class ParticipantAnswer extends BaseEntity
     private $checked = false;
 
     /**
+     * @ORM\Column(type="string", length=512, nullable=true)
+     */
+    private $textAnswer;
+
+    /**
      * @Assert\NotNull()
      * @ORM\ManyToOne(targetEntity="Participant", inversedBy="answers")
      */
     private $participant;
 
-    public function __construct($participant, $answer, $question, $checked)
+    public function __construct($participant, $answer, $question)
     {
         $this->question = $question;
         $this->participant = $participant;
         $this->answer = $answer;
-        $this->checked = $checked;
     }
 
     public function getAnswer()
@@ -74,5 +78,15 @@ class ParticipantAnswer extends BaseEntity
     public function getQuestion()
     {
         return $this->question;
+    }
+
+    public function getTextAnswer()
+    {
+        return $this->textAnswer;
+    }
+
+    public function setTextAnswer($textAnswer)
+    {
+        $this->textAnswer = $textAnswer;
     }
 }

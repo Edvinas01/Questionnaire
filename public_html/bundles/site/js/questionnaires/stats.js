@@ -121,4 +121,8 @@ $(function () {
             }
         });
     });
+
+    $('.open-answer').each(function (i, table) {
+        $(table).DataTable();
+    });
 });

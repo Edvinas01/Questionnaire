@@ -398,18 +398,20 @@ class QuestionnairesController extends Controller
                     if ($question->getId() == $questionData['id']) {
 
                         $type = $questionData['type'];
-                        if ($type == 'MULTIPLE' || $type == 'SINGLE') {
+                        if ($type == 'MULTIPLE' || $type == 'SINGLE' || $type == 'OPEN') {
                             $question->setType($type);
                         }
-
                         $question->setContent($questionData['content']);
                     }
 
-                    // Update each answer data.
-                    foreach ($questionData['answers'] as $answerData) {
-                        foreach ($question->getAnswers() as $answer) {
-                            if ($answer->getId() == $answerData['id']) {
-                                $answer->setContent($answerData['content']);
+                    // Open question does not need answers.
+                    if ($question->getType() != 'OPEN') {
+                        // Update each answer data.
+                        foreach ($questionData['answers'] as $answerData) {
+                            foreach ($question->getAnswers() as $answer) {
+                                if ($answer->getId() == $answerData['id']) {
+                                    $answer->setContent($answerData['content']);
+                                }
                             }
                         }
                     }

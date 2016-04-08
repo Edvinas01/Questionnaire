@@ -5,6 +5,40 @@ $(function () {
     var questionnaireId = questionnaire .data('id');
     var questionnaireDetails = questionnaire.find('.details');
 
+    function setupQuestionByType(link) {
+        var question = $(link).parents('.question');
+        var changedTo = $(link).val();
+
+        var container = question.find('.question-text');
+        var answers = question.find('.answers');
+
+        if (changedTo == 'OPEN') {
+            answers.hide(0, '', function () {
+                container.removeClass('col-md-7');
+                container.addClass('col-md-12');
+            });
+        } else {
+            container.removeClass('col-md-12');
+            container.addClass('col-md-7');
+            answers.show();
+        }
+    }
+
+    function setupSelects() {
+        $('.type-select').each(function (i, obj) {
+            setupQuestionByType($(obj));
+        });
+    }
+
+    questionnaire.on('change', 'select.type-select', function () {
+        setupQuestionByType($(this));
+    });
+
+    /**
+     * Initialization for type selects.
+     */
+    setupSelects();
+
     /**
      * Collect questionnaire data for saving to back-end.
      */
@@ -119,7 +153,7 @@ $(function () {
     });
 
     /**
-     * Add a new question to and questionnaire.
+     * Add a new question to the questionnaire.
      */
     questions.on('click', 'button.add-question', function () {
         $.ajax({
@@ -129,6 +163,7 @@ $(function () {
             success: function (response) {
                 questions.html(response);
 
+                setupSelects();
                 notify('Added: ', 'New question has been added');
             }
         });
@@ -146,6 +181,7 @@ $(function () {
             success: function (response) {
                 questions.html(response);
 
+                setupSelects();
                 notify('Removed: ', 'A question has been removed');
             }
         });

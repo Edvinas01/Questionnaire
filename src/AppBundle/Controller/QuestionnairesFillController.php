@@ -89,12 +89,17 @@ class QuestionnairesFillController extends Controller
                     $count++;
                     foreach ($data['answers'] as $participantAnswer) {
                         if ($answer->getId() == $participantAnswer['id']) {
-                            array_push($fullAnswers, new ParticipantAnswer(
-                                    $participant,
-                                    $answer,
-                                    $question,
-                                    $participantAnswer['checked'])
-                            );
+                            $constructed = new ParticipantAnswer(
+                                $participant,
+                                $answer,
+                                $question);
+
+                            if ($question->getType() == 'OPEN') {
+                                $constructed->setTextAnswer($participantAnswer['textAnswer']);
+                            } else {
+                                $constructed->setChecked($participantAnswer['checked']);
+                            }
+                            array_push($fullAnswers, $constructed);
                         }
                     }
                 }

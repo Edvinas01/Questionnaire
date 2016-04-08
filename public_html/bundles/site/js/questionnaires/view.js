@@ -7,10 +7,19 @@ $(function () {
         var answers = [];
         $('.question').each(function (i, question) {
             $(question).find('.answer').each(function (j, answer) {
-                answers.push({
-                    "id": $(answer).data('id'),
-                    "checked": $(answer).is(':checked')
-                });
+                var selection = $(answer);
+
+                if (selection.data('type') == 'OPEN') {
+                    answers.push({
+                        "id": selection.data('id'),
+                        "textAnswer": selection.val()
+                    });
+                } else {
+                    answers.push({
+                        "id": selection.data('id'),
+                        "checked": selection.is(':checked')
+                    });
+                }
             });
         });
 
