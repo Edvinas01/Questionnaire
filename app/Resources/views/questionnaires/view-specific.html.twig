@@ -1,0 +1,65 @@
+{% extends 'layouts/base.html.twig' %}
+{% set pageTitle = 'užpildytas' %}
+
+{% block body %}
+    <div class="col-lg-12">
+        {% if url.participant is null %}
+            <h3>Vartotojas {{ url.username }} klausimyno dar neužpildė</h3>
+        {% else %}
+            <h3>Vartotojo {{ url.username }} atsakymai</h3>
+            <hr>
+            <div class="row">
+                {% set questionnaire = url.questionnaire %}
+                {% set participant = url.participant %}
+
+                {% for question in questionnaire.questions %}
+                    <div class="col-md-12">
+                        {% if question.content|length == 0 %}
+                            <h3>Klausimas neturi aprašymo</h3>
+                        {% else %}
+                            <h3>{{ loop.index }}. {{ question.content }}</h3>
+                        {% endif %}
+                        {% for participantAnswer in participant.answers if participantAnswer.question.id == question.id %}
+                            {% if question.type == 'OPEN' %}
+                                <textarea rows="5"
+                                          disabled
+                                          class="form-control">{{ participantAnswer.textAnswer }}</textarea>
+                            {% else %}
+                                {% if participantAnswer.opinion is not null %}
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            Šiam klausimui {{ url.username }} pateikė savo variantą
+                                        </div>
+                                        <div class="col-md-5">
+                                            <input disabled class="input-sm form-control" value="{{ participantAnswer.opinion }}">
+                                        </div>
+                                    </div>
+                                {% else %}
+                                    {% for answer in question.answers %}
+                                        {% set checked = 'false' %}
+                                        {% if participantAnswer.answer.id == answer.id %}
+                                            {% set checked = participantAnswer.checked %}
+                                            <span class="{{ question.type == 'MULTIPLE' ? 'checkbox' : 'radio' }}">
+                                            <label>
+                                                <input {{ checked ? 'checked' : '' }}
+                                                        disabled
+                                                        type="{{ question.type == 'MULTIPLE' ? 'checkbox' : 'radio' }}">
+
+                                                {% if answer.content|length == 0 %}
+                                                    N/A
+                                                {% else %}
+                                                    {{ answer.content }}
+                                                {% endif %}
+                                            </label>
+                                        </span>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

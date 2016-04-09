@@ -4,6 +4,9 @@
 {% block body %}
     <div class="col-lg-12 questionnaire" data-id="{{ questionnaire.id }}">
         <form id="questions-form">
+            {% if url is defined %}
+                <input type="hidden" name="url" value="{{ url.id }}"/>
+            {% endif %}
             <div class="row questions">
                 {% for question in questionnaire.questions %}
                     <div class="col-lg-12 col-md-12 question" data-id="{{ question.id }}">

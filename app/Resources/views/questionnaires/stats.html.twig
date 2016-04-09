@@ -7,7 +7,7 @@
 {% block body %}
     <div class="col-lg-12 questionnaire" data-id="{{ questionnaire.id }}">
         {% if questionnaire.participants|length > 0 %}
-            <h2>"{{ questionnaire.name }}" stats</h2>
+            <h2>"{{ questionnaire.name }}" statistikos</h2>
             <h4>
                 Sveikiname, jūsų klausimyną astakė {{ questionnaire.participants|length }}
                 {{ questionnaire.participants|length == 1 ? 'žmogus' : 'žmonės' }}!
@@ -107,8 +107,10 @@
                                 </thead>
                                 <tbody>
                                 {% for participant in questionnaire.participants %}
-                                    <th>{{ participant.ip }}</th>
-                                    <th>{{ participant.participationDate|date("Y-d-m") }}</th>
+                                    <tr>
+                                        <td>{{ participant.ip }}</td>
+                                        <td>{{ participant.participationDate|date("Y-d-m h:m:s") }}</td>
+                                    </tr>
                                 {% endfor %}
                                 </tbody>
                             </table>

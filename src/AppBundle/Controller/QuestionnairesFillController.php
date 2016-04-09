@@ -33,6 +33,40 @@ class QuestionnairesFillController extends Controller
 
     /**
      * @Method("GET")
+     * @Route("/questionnaires-url/{id}")
+     */
+    public function questionnaireViewActionSpecific($id)
+    {
+        $url = $this->getUrl($id);
+
+        if ($url == null) {
+            return new Response("Questionnaire cannot be accessed", 401);
+        }
+
+        return $this->render('questionnaires/view.html.twig', array(
+            'url' => $url,
+            'questionnaire' => $url->getQuestionnaire()
+        ));
+    }
+
+    private function getUrl($id)
+    {
+        // The id is the generated url id.
+        $username = $this->get('security.token_storage')->getToken()->getUser()->getUsername();
+
+        $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
+        $qb->select('url')
+            ->from('AppBundle:Url', 'url')
+            ->where('url.id = ?1')
+            ->andWhere('url.username = ?2')
+            ->setParameter(1, $id)
+            ->setParameter(2, $username);
+
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+
+    /**
+     * @Method("GET")
      * @Route("/thanks", name="thanks")
      */
     public function thanksViewAction()
@@ -70,16 +104,26 @@ class QuestionnairesFillController extends Controller
 
         $count = $qb->getQuery()->getSingleScalarResult();
 
-        // Do not save repeating ip's
-        if ($count >= 1) {
+        // Construct participant.
+        $participant = new Participant(new \DateTime());
+
+        // Did this participant come from an url?
+        if (isset($data['urlId'])) {
+            $url = $this->getUrl($data['urlId']);
+
+            // Already filled out or url is null.
+            if ($url == null || $url->getParticipant() != null) {
+                return null;
+            }
+            $participant->setUrl($url);
+
+        } else if ($count >= 1) {
+            // Do not save repeating ip's
             return null;
         }
 
         if (isset($data['answers'])) {
             $fullAnswers = array();
-
-            // Construct participant.
-            $participant = new Participant(new \DateTime());
 
             // Iterate over the questionnaire data.
             foreach ($questionnaire->getQuestions() as $question) {
@@ -100,7 +144,8 @@ class QuestionnairesFillController extends Controller
                         if (isset($participantAnswer['other']) &&
 
                             // Opinion for question (other field).
-                            $question->getId() == $participantAnswer['questionId']) {
+                            $question->getId() == $participantAnswer['questionId']
+                        ) {
                             $constructed->setOpinion($participantAnswer['other']);
                             $other = true;
                             break;
@@ -109,14 +154,16 @@ class QuestionnairesFillController extends Controller
 
                             // Open question type.
                             $question->getType() == 'OPEN' &&
-                            $question->getId() == $participantAnswer['questionId']) {
+                            $question->getId() == $participantAnswer['questionId']
+                        ) {
                             $constructed->setTextAnswer($participantAnswer['textAnswer']);
                             break;
 
                         } else if (isset($participantAnswer['id']) &&
 
                             // All other types.
-                            $answer->getId() == $participantAnswer['id']) {
+                            $answer->getId() == $participantAnswer['id']
+                        ) {
                             $constructed->setChecked($participantAnswer['checked']);
                             break;
                         }

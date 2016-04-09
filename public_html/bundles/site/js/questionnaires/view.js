@@ -1,6 +1,7 @@
 $(function () {
 
     var questionnaireId = $('.questionnaire').data('id');
+    var urlId = $('input[name=url]').val();
 
     function collectData() {
 
@@ -36,7 +37,8 @@ $(function () {
         });
 
         return {
-            "answers": answers
+            "answers": answers,
+            "urlId": urlId
         };
     }
 
@@ -54,7 +56,9 @@ $(function () {
 
     function modifyClosestOptions(link, enable) {
         $(link).parents('.answers').find('.answer').each(function (i, obj) {
-            $(obj).prop('required', enable);
+            if (!$(obj).is(':checkbox')) {
+                $(obj).prop('required', enable);
+            }
 
             var full = $(obj).parents('span');
             if (enable) {

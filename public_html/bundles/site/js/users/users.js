@@ -3,7 +3,7 @@ $(function () {
     var users = $('#users');
     var modal = $('#edit-create-modal');
 
-    users.DataTable();
+    users.DataTable(tableLanguage());
 
     function collectData() {
         return {
@@ -18,11 +18,11 @@ $(function () {
         var id = $(this).parents('tr').data('id');
 
         bootbox.dialog({
-            message: "Are you sure you want to delete this user?",
-            title: "Delete user",
+            message: "Ar jūs tikrai norite pašalinti šią paskyrą?",
+            title: "Pašalinti",
             buttons: {
                 yes: {
-                    label: "Delete",
+                    label: "Pašalinti",
                     className: "btn-danger",
                     callback: function () {
                         $.ajax({
@@ -35,7 +35,7 @@ $(function () {
                     }
                 },
                 no: {
-                    label: "Cancel",
+                    label: "Atšaukti",
                     className: "btn-success"
                 }
             }

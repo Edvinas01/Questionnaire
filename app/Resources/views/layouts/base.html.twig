@@ -18,6 +18,26 @@
     </div>
 </div>
 {% include 'layouts/footer.html.twig' %}
+<script type="application/javascript">
+    function tableLanguage() {
+        return {
+            language: {
+                paginate: {
+                    first: "Pirmas",
+                    last: "Paskutinis",
+                    next: "Sekantis",
+                    previous: "Ankstesnis"
+                },
+                lengthMenu: "Rodyti _MENU_ įrašų",
+                emptyTable: "Lentelėje duomenų nėra",
+                infoFiltered: "(filtruojama iš _MAX_ įrašų)",
+                info: "Rodoma nuo _START_ iki _END_ iš _TOTAL_ įrašų",
+                zeroRecords: "Nieko nerasta",
+                search: "Paieška"
+            }
+        }
+    }
+</script>
 {% block javascript %}{% endblock %}
 </body>
 </html>

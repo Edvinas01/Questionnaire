@@ -1,6 +1,9 @@
 {% extends 'layouts/base.html.twig' %}
-{% set pageTitle = 'sukurti' %}
+{% set pageTitle = 'redaguoti' %}
 
+{% block header %}
+    <link href="{{ asset('bundles/datatables/datatables.min.css') }}" rel="stylesheet"/>
+{% endblock %}
 {% block body %}
     <div class="col-lg-12" id="questionnaire" data-id="{{ questionnaire.id }}">
         <div class="bs-docs-section">
@@ -69,10 +72,83 @@
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Unikalios nuorodos sistemos vartotojams
+                            <div class="pull-right">
+                                <button id="add-url" class="btn btn-xs btn-success">Pridėti naują</button>
+                            </div>
+                        </div>
+                        <div class="panel-body">
+                            <table id="urls" class="table table-striped table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>Nuoroda</th>
+                                    <th>Vartotojo vardas</th>
+                                    <th>Veiksmai</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for url in questionnaire.urls %}
+                                    <tr>
+                                        <td>
+                                            <a href="{{ app.request.getSchemeAndHttpHost() ~ '/questionnaires-url/' ~ url.id }}">
+                                                {{ app.request.getSchemeAndHttpHost() ~ '/questionnaires-url/' ~ url.id }}
+                                            </a>
+                                        </td>
+                                        <td>{{ url.username }}</td>
+                                        <td>
+                                            <button data-questionnaire-id="{{ questionnaire.id }}"
+                                                    data-id="{{ url.id }}"
+                                                    class="btn btn-xs btn-success edit-url">Redaguoti</button>
+
+                                            <a class="btn btn-xs btn-success" href="{{ app.request.getSchemeAndHttpHost() ~ '/questionnaires-stats/' ~ url.id ~ '/review' }}">
+                                                Peržiūrėti
+                                            </a>
+
+                                            <button data-questionnaire-id="{{ questionnaire.id }}"
+                                                    data-id="{{ url.id }}"
+                                                    class="btn btn-xs btn-danger remove-url">Pašalinti</button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="url-edit-create-modal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"></h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" name="id"/>
+                    <input type="hidden" name="questionnaire-id" value="{{ questionnaire.id }}"/>
+                    <div class="form-group">
+                        <label class="control-label">Vartotojo slapyvardis</label>
+                        <input type="text" class="form-control" name="username"/>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button id="submit-url" type="submit" class="btn btn-success">Patvirtinti</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Atšaukti</button>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
 
 {% block javascript %}
+    <script type="application/javascript" src="{{ asset('bundles/datatables/datatables.min.js') }}"></script>
     <script type="application/javascript" src="{{ asset('bundles/site/js/questionnaires/creation.js') }}"></script>
+    <script type="application/javascript" src="{{ asset('bundles/site/js/questionnaires/urls.js') }}"></script>
 {% endblock %}

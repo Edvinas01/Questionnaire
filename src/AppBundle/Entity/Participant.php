@@ -32,6 +32,11 @@ class Participant extends BaseEntity
      */
     private $participationDate;
 
+    /**
+     * @ORM\OneToOne(targetEntity="Url", inversedBy="participant")
+     */
+    private $url;
+
     public function __construct($participationDate)
     {
         $this->participationDate = $participationDate;
@@ -70,5 +75,15 @@ class Participant extends BaseEntity
     public function getParticipationDate()
     {
         return $this->participationDate;
+    }
+
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    public function setUrl($url)
+    {
+        $this->url = $url;
     }
 }

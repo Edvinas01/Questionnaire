@@ -34,6 +34,37 @@ class QuestionnairesStatsController extends Controller
 
     /**
      * @Method("GET")
+     * @Route("/questionnaires-stats/{id}/review")
+     */
+
+    public function questionnaireSpecificStats($id)
+    {
+        // Make sure this questionnaire belongs to current user.
+        $userId = $this->get('security.token_storage')->getToken()->getUser()->getId();
+
+        // Find the url.
+        $qb = $this->getDoctrine()->getManager()->createQueryBuilder();
+        $qb->select('url')
+            ->from('AppBundle:Url', 'url')
+            ->join('url.questionnaire', 'q')
+            ->join('q.user', 'u')
+            ->where('url.id = ?1')
+            ->andWhere('u.id = ?2')
+            ->setParameter(1, $id)
+            ->setParameter(2, $userId);
+
+        $url = $qb->getQuery()->getOneOrNullResult();
+        if ($url == null) {
+            throw new AccessDeniedException("You cannot access this page");
+        }
+
+        return $this->render('questionnaires/view-specific.html.twig', array(
+            'url' => $url
+        ));
+    }
+
+    /**
+     * @Method("GET")
      * @Route("/questionnaires-stats/{id}/json")
      */
     public function getStats($id)

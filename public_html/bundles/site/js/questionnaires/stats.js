@@ -136,7 +136,7 @@ $(function () {
     });
 
     $('.open-answer').each(function (i, table) {
-        $(table).DataTable();
+        $(table).DataTable(tableLanguage());
     });
 
     $('.show-opinions').click(function () {

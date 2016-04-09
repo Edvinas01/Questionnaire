@@ -47,6 +47,11 @@ class Questionnaire extends BaseEntity
      */
     private $questions;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Url", mappedBy="questionnaire", orphanRemoval=true)
+     */
+    private $urls;
+
     public function __construct($name, $user, $expires)
     {
         $this->name = $name;
@@ -117,5 +122,15 @@ class Questionnaire extends BaseEntity
     public function getParticipants()
     {
         return $this->participants;
+    }
+
+    public function getUrls()
+    {
+        return $this->urls;
+    }
+
+    public function setUrls($urls)
+    {
+        $this->urls = $urls;
     }
 }
