@@ -55,7 +55,7 @@ class QuestionnairesStatsController extends Controller
 
         $url = $qb->getQuery()->getOneOrNullResult();
         if ($url == null) {
-            throw new AccessDeniedException("You cannot access this page");
+            throw new AccessDeniedException("Jūs neturite teisės prieiti prie šito puslapio");
         }
 
         return $this->render('questionnaires/view-specific.html.twig', array(
@@ -149,7 +149,7 @@ class QuestionnairesStatsController extends Controller
         $result = $qb->getQuery()->getSingleResult();
 
         if ($result == null) {
-            throw new NotFoundHttpException("No such questionnaire found under the current user");
+            throw new NotFoundHttpException("Klausimynas nerastas");
         }
         return $result;
     }

@@ -39,7 +39,7 @@ class QuestionnairesController extends Controller
         if (count($this->getQuestionnaires()) + 1 > $this->MAX_QUESTIONNAIRE_COUNT) {
 
             $response = new Response();
-            $response->setContent('You can have at most ' . $this->MAX_QUESTIONNAIRE_COUNT . ' questionnaires');
+            $response->setContent('Jūs galite turėti daugiausiai ' . $this->MAX_QUESTIONNAIRE_COUNT . ' klausimynų');
             $response->setStatusCode(400);
             return $response;
         }
@@ -49,7 +49,7 @@ class QuestionnairesController extends Controller
         // Max questionnaire duration is one week.
         if (!$this->isValidExpiry($expires)) {
             $response = new Response();
-            $response->setContent('Invalid expiry date');
+            $response->setContent('Neteisingas galiojimo laikas');
             $response->setStatusCode(400);
             return $response;
         }
@@ -295,7 +295,7 @@ class QuestionnairesController extends Controller
 
         if ($questionnaire == null) {
             throw $this->createNotFoundException(
-                'No questionnaire found with id ' . $id
+                'Klausimynas neegzistuoja su identifikatoriumi: ' . $id
             );
         }
 
@@ -325,7 +325,7 @@ class QuestionnairesController extends Controller
 
         if ($question == null) {
             throw $this->createNotFoundException(
-                'No question found with id ' . $id
+                'Klausimas neegzistuoja su identifikatoriumi: ' . $id
             );
         }
 
@@ -356,7 +356,7 @@ class QuestionnairesController extends Controller
 
         if ($answer == null) {
             throw $this->createNotFoundException(
-                'No answer found with id ' . $id
+                'Atsakymas neegzistuoja su identifikatoriumi: ' . $id
             );
         }
 

@@ -23,7 +23,7 @@ class QuestionnairesFillController extends Controller
     {
         $questionnaire = $this->getQuestionnaire($id);
         if ($questionnaire == null) {
-            return new Response("Questionnaire cannot be accessed", 401);
+            throw new AccessDeniedException("Klausimynas nebegalioja arba yra ištrintas");
         }
 
         return $this->render('questionnaires/view.html.twig', array(
@@ -40,7 +40,7 @@ class QuestionnairesFillController extends Controller
         $url = $this->getUrl($id);
 
         if ($url == null) {
-            return new Response("Questionnaire cannot be accessed", 401);
+            throw new AccessDeniedException("Jūs negalite pildyti klausimyno naudojant šią nuorodą");
         }
 
         return $this->render('questionnaires/view.html.twig', array(
@@ -195,6 +195,6 @@ class QuestionnairesFillController extends Controller
             ->setParameter(1, $id)
             ->setParameter(2, new \DateTime());
 
-        return $qb->getQuery()->getSingleResult();
+        return $qb->getQuery()->getOneOrNullResult();
     }
 }

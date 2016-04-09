@@ -7,9 +7,14 @@
             <img width="300px" class="img-circle img-auto" src="{{ asset('bundles/site/img/funky_dogo.jpg') }}">
         </div>
         <div class="text-center">
-            <h1>An error occurred while processing your request</h1>
+            {% if exception.message is not null %}
+
+                <h1>{{ exception.message }}</h1>
+            {% else %}
+                <h1>500 - Įvyko klaida apdorojant jūsų užklausą</h1>
+            {% endif %}
             <div style="font-size: 3em">
-                <a href="{{ path('home') }}">Home</a>
+                <a href="{{ path('home') }}">Pagrindinis</a>
             </div>
         </div>
     </div>
