@@ -20,7 +20,9 @@
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 {% if app.user %}
-                    <a class="btn btn-primary navbar-btn navbar-left" href="javascript:;" data-toggle="modal" data-target="#create-questionnaire">Sukurti klausimyną</a>
+                    {% if is_granted('ROLE_USER') %}
+                        <a class="btn btn-primary navbar-btn navbar-left" href="javascript:;" data-toggle="modal" data-target="#create-questionnaire">Sukurti klausimyną</a>
+                    {% endif %}
                     <li class="dropdown">
                         <a aria-expanded="false"
                            aria-haspopup="true"

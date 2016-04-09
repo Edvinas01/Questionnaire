@@ -30,11 +30,13 @@ security:
                 path: logout
 
     role_hierarchy:
-            ROLE_MODERATOR: [ROLE_USER]
-            ROLE_ADMIN:     [ROLE_USER, ROLE_MODERATOR]
+            ROLE_USER:      [ROLE_DEFAULT]
+            ROLE_MODERATOR: [ROLE_DEFAULT]
+            ROLE_ADMIN:     [ROLE_MODERATOR]
 
     access_control:
         - { path: ^/($|about|login|register|thanks|questionnaires-view/*), roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/users/*, roles: ROLE_ADMIN }
         - { path: ^/moderate/*, roles: ROLE_MODERATOR }
-        - { path: ^/*, roles: ROLE_USER }
+        - { path: ^/(questionnaires/*|questionnaires-stats/*), roles: ROLE_USER }
+        - { path: ^/*, roles: ROLE_DEFAULT }
