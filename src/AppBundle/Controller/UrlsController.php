@@ -36,7 +36,10 @@ class UrlsController extends Controller
         $questionnaire = $this->getQuestionnaire($url['questionnaireId']);
 
         $em = $this->getDoctrine()->getManager();
-        $em->persist(new Url($url['username'], $questionnaire));
+
+        foreach ($url['usernames'] as $username) {
+            $em->persist(new Url($username, $questionnaire));
+        }
         $em->flush();
 
         return new Response();
@@ -50,11 +53,13 @@ class UrlsController extends Controller
     {
         $url = $this->getUrlWithCheck($id);
 
-        $participant = $url->getParticipant();
-        $participant->setUrl(null);
-
         $em = $this->getDoctrine()->getManager();
-        $em->persist($participant);
+        $participant = $url->getParticipant();
+
+        if ($participant) {
+            $participant->setUrl(null);
+            $em->persist($participant);
+        }
         $em->remove($url);
         $em->flush();
 
